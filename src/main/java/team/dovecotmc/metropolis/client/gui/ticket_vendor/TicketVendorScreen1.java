@@ -274,7 +274,9 @@ public class TicketVendorScreen1 extends Screen {
         if (this.client != null && this.client.world != null) {
             tipId = client.world.getTime() / 128f;
         }
-        Text tip = Text.translatable("gui.metropolis.ticket_vendor_1.tips_" + ((int) tipId % 3));
+//        Text tip = Text.translatable("gui.metropolis.ticket_vendor_1.tips_" + ((int) tipId % 3));
+        String[] tips = Text.translatable("gui.metropolis.ticket_vendor_1.tips").getString().split("\n");
+        String tip = tips[((int) tipId % tips.length)];
         this.textRenderer.draw(
                 matrices,
                 tip,

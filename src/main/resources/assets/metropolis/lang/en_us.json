@@ -15,6 +15,7 @@
     "gui.metropolis.ticket_vendor_1.button.buy_commuter": "Buy commuter",
     "gui.metropolis.ticket_vendor_1.button.buy_ic_card": "Buy an IC card",
 
+    "gui.metropolis.ticket_vendor_1.tips": "᛫ Use [Refund] button to return wrong tickets.\n᛫ Dovecot is a Dovecot?\n᛫ This GUI is based on the JR East EV23 TVM.\n᛫ You pull out the ticket, then walk thru. Actually it's not.\n᛫ There was a discussion about changing the Cordon Block to the Condor Block.",
     "gui.metropolis.ticket_vendor_1.tips_0": "᛫ Use [Refund] button to return wrong tickets.",
     "gui.metropolis.ticket_vendor_1.tips_1": "᛫ Dovecot is a Dovecot?",
     "gui.metropolis.ticket_vendor_1.tips_2": "᛫ This GUI is based on the JR East EV23 TVM.",
