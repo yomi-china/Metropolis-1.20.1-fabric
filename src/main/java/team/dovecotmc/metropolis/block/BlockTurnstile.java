@@ -31,6 +31,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 import team.dovecotmc.metropolis.block.entity.BlockEntityTurnstile;
+import team.dovecotmc.metropolis.item.IItemOpenGate;
 import team.dovecotmc.metropolis.item.ItemCard;
 import team.dovecotmc.metropolis.item.ItemTicket;
 import team.dovecotmc.metropolis.item.MetroItems;
@@ -94,7 +95,8 @@ public class BlockTurnstile extends HorizontalFacingBlock implements BlockEntity
                 return ActionResult.SUCCESS;
             }
 
-            if (stack.getItem() instanceof ItemCard && ((ItemCard) stack.getItem()).infiniteBalance) {
+            // Open Gate
+            if ((stack.getItem() instanceof ItemCard && ((ItemCard) stack.getItem()).infiniteBalance) || stack.getItem() instanceof IItemOpenGate) {
                 if (world.getTime() - nbt.getLong(BlockEntityTurnstile.TICKET_ANIMATION_START) >= 7) {
                     world.playSound(null, pos, MtrSoundUtil.TICKET_BARRIER_CONCESSIONARY, SoundCategory.BLOCKS, 1f, 1f);
                     world.playSound(null, pos, SoundEvents.BLOCK_WOOL_BREAK, SoundCategory.BLOCKS, 1f, 1f);

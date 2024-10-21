@@ -61,6 +61,7 @@ public class MetroItems {
     public static final Item ITEM_SINGLE_TRIP_TICKET_USED = register("single_trip_ticket_used", new ItemTicket(new Item.Settings(), true));
     public static final Item ITEM_CARD = register("card", new ItemCard(new Item.Settings().group(Metropolis.ITEM_GROUP), false));
     public static final Item ITEM_CREATIVE_CARD = register("creative_card", new ItemCard(new Item.Settings().group(Metropolis.ITEM_GROUP), true));
+    public static final Item ITEM_EXIT_TICKET = register("exit_ticket", new ItemExitTicket(new Item.Settings().group(Metropolis.ITEM_GROUP)));
     // Monitor
     public static final Item ITEM_ITV_MONITOR = register("itv_monitor", new BlockItem(MetroBlocks.BLOCK_ITV_MONITOR, new Item.Settings().group(Metropolis.ITEM_GROUP)));
     // Security instruments
