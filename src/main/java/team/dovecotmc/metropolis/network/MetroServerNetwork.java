@@ -14,6 +14,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import team.dovecotmc.metropolis.Metropolis;
+import team.dovecotmc.metropolis.block.entity.BlockEntityFareAdj;
 import team.dovecotmc.metropolis.block.entity.BlockEntityTicketVendor;
 import team.dovecotmc.metropolis.item.ItemCard;
 import team.dovecotmc.metropolis.item.ItemTicket;
@@ -136,6 +137,30 @@ public class MetroServerNetwork {
             int balance = buf.readInt();
             Item item = Metropolis.config.currencyItem;
             server.execute(() -> {
+                System.out.println(pos);
+                System.out.println(stack);
+                System.out.println(balance);
+                System.out.println(item);
+                if (balance > 0) {
+                    for (int i = 0; i < balance / item.getMaxCount(); i++) {
+                        player.getInventory().setStack(player.getInventory().getSlotWithStack(new ItemStack(item)), ItemStack.EMPTY);
+                    }
+                    if (balance % item.getMaxCount() > 0) {
+                        player.getInventory().removeStack(player.getInventory().getSlotWithStack(new ItemStack(item)), balance % item.getMaxCount());
+                    }
+                }
+                
+                World world = player.getWorld();
+                if (world != null) {
+                    world.playSound(null, pos, SoundEvents.BLOCK_WOOL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
+                    if (world.getBlockEntity(pos) instanceof BlockEntityFareAdj blockEntity) {
+                        blockEntity.setStack(0, stack);
+                        NbtCompound nbt = blockEntity.createNbt();
+                        nbt.putLong(BlockEntityTicketVendor.TICKET_ANIMATION_BEGIN_TIME, world.getTime());
+                        blockEntity.readNbt(nbt);
+                        player.networkHandler.sendPacket(blockEntity.toUpdatePacket());
+                    }
+                }
             });
         });
     }
@@ -152,5 +177,6 @@ public class MetroServerNetwork {
         registerTicketVendorResultReceiver();
         registerTicketVendorCloseReceiver();
         registerCurrencyItemReceiver();
+        registerFareAdjCloseReceiver();
     }
 }

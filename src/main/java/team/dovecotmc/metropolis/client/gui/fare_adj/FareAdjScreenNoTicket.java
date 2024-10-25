@@ -14,6 +14,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import team.dovecotmc.metropolis.Metropolis;
+import team.dovecotmc.metropolis.item.MetroItems;
 
 import java.util.List;
 
@@ -230,7 +231,7 @@ public class FareAdjScreenNoTicket extends Screen {
                                 Text.translatable("gui.metropolis.fare_adj_payment.single_trip.title"),
                                 Text.translatable("gui.metropolis.fare_adj_payment.single_trip.ticket_value", MAXIMUM_PRICE),
                                 Text.translatable("gui.metropolis.fare_adj_payment.single_trip.amount", 1)
-                            }, new ItemStack(Items.TNT)),
+                            }, new ItemStack(MetroItems.ITEM_EXIT_TICKET)),
                             this
                     ));
                 }
