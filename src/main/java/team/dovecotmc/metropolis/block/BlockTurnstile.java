@@ -97,12 +97,7 @@ public class BlockTurnstile extends HorizontalFacingBlock implements BlockEntity
             }
 
             // Open Gate
-            if ((stack.getItem() instanceof ItemCard && ((ItemCard) stack.getItem()).infiniteBalance) || stack.getItem() instanceof IItemOpenGate) {
-                // Check if not creative or Exit mode
-                if (stack.getItem() instanceof IItemOpenGate && !type.equals(BlockEntityTurnstile.EnumTurnstileType.EXIT)) {
-                    return ActionResult.SUCCESS;
-                }
-
+            if ((stack.getItem() instanceof ItemCard && ((ItemCard) stack.getItem()).infiniteBalance)) {
                 if (player.isCreative() && world.getTime() - nbt.getLong(BlockEntityTurnstile.TICKET_ANIMATION_START) >= 7) {
                     world.playSound(null, pos, MtrSoundUtil.TICKET_BARRIER_CONCESSIONARY, SoundCategory.BLOCKS, 1f, 1f);
                     world.playSound(null, pos, SoundEvents.BLOCK_WOOL_BREAK, SoundCategory.BLOCKS, 1f, 1f);

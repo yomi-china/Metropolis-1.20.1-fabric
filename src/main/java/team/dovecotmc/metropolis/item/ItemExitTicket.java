@@ -9,6 +9,6 @@ import net.minecraft.item.Item;
  */
 public class ItemExitTicket extends Item implements IItemOpenGate {
     public ItemExitTicket(Settings settings) {
-        super(settings);
+        super(settings.maxCount(1));
     }
 }
