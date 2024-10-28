@@ -55,7 +55,7 @@ public class FareAdjPaymentScreen extends Screen {
         if (MinecraftClient.getInstance().world != null) {
             tipId = MinecraftClient.getInstance().world.random.nextInt(3);
         }
-        MetroClientNetwork.updateCurrencyItem();
+        MetroClientNetwork.updateMaxFare();
     }
 
     @Override

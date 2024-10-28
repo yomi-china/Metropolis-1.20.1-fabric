@@ -54,9 +54,11 @@ public class MetroServerNetwork {
         PacketByteBuf packet = PacketByteBufs.create();
         packet.writeBlockPos(pos);
         ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
-        if (!(stack.getItem() instanceof ItemTicket || stack.getItem() instanceof ItemCard)) {
-            stack = ItemStack.EMPTY;
-        }
+        // TODO: Card charger
+        stack = ItemStack.EMPTY;
+//        if (!(stack.getItem() instanceof ItemTicket || stack.getItem() instanceof ItemCard)) {
+//            stack = ItemStack.EMPTY;
+//        }
         packet.writeItemStack(stack);
         ServerPlayNetworking.send(player, FARE_ADJ_GUI, packet);
     }
@@ -170,6 +172,14 @@ public class MetroServerNetwork {
     public static void registerCurrencyItemReceiver() {
         ServerPlayNetworking.registerGlobalReceiver(GET_CURRENCY_ITEM, (server, player, handler, buf, responseSender) -> {
             ServerPlayNetworking.send(player, GET_CURRENCY_ITEM_RECEIVER, PacketByteBufs.create().writeItemStack(new ItemStack(Metropolis.config.currencyItem)));
+        });
+    }
+
+    public static final Identifier GET_MAX_FARE = new Identifier(Metropolis.MOD_ID, "get_max_fare");
+    public static final Identifier GET_MAX_FARE_RECEIVER = new Identifier(Metropolis.MOD_ID, "get_max_fare_receiver");
+    public static void registerMaxFareReceiver() {
+        ServerPlayNetworking.registerGlobalReceiver(GET_MAX_FARE, (server, player, handler, buf, responseSender) -> {
+            ServerPlayNetworking.send(player, GET_MAX_FARE_RECEIVER, PacketByteBufs.create().writeVarInt(Metropolis.config.maxFare));
         });
     }
 

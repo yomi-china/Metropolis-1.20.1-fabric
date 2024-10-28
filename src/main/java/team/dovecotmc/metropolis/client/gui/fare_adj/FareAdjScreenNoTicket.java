@@ -14,6 +14,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import team.dovecotmc.metropolis.Metropolis;
+import team.dovecotmc.metropolis.client.network.MetroClientNetwork;
 import team.dovecotmc.metropolis.item.MetroItems;
 
 import java.util.List;
@@ -225,11 +226,12 @@ public class FareAdjScreenNoTicket extends Screen {
                 if (nextHovering) {
                     playButtonDownSound();
 //                    client.setScreen(new FareAdjScreenPayFare(pos, data, this));
+                    int price = MetroClientNetwork.maxFare;
                     client.setScreen(new FareAdjPaymentScreen(
                             pos,
-                            new FareAdjPaymentData(FareAdjPaymentData.EnumTicketVendorPaymentType.PAY_FARE, MAXIMUM_PRICE, new Text[]{
+                            new FareAdjPaymentData(FareAdjPaymentData.EnumTicketVendorPaymentType.PAY_FARE, price, new Text[]{
                                 Text.translatable("gui.metropolis.fare_adj_payment.single_trip.title"),
-                                Text.translatable("gui.metropolis.fare_adj_payment.single_trip.ticket_value", MAXIMUM_PRICE),
+                                Text.translatable("gui.metropolis.fare_adj_payment.single_trip.ticket_value", price),
                                 Text.translatable("gui.metropolis.fare_adj_payment.single_trip.amount", 1)
                             }, new ItemStack(MetroItems.ITEM_EXIT_TICKET)),
                             this
