@@ -17,35 +17,35 @@
             "y": 270
         },
         "facing=north,part=head": {
-            "model": "minecraft:block/air",
+            "model": "metropolis:base/blanco",
             "y": 0
         },
         "facing=east,part=head": {
-            "model": "minecraft:block/air",
+            "model": "metropolis:base/blanco",
             "y": 90
         },
         "facing=south,part=head": {
-            "model": "minecraft:block/air",
+            "model": "metropolis:base/blanco",
             "y": 180
         },
         "facing=west,part=head": {
-            "model": "minecraft:block/air",
+            "model": "metropolis:base/blanco",
             "y": 270
         },
         "facing=north,part=tail": {
-            "model": "minecraft:block/air",
+            "model": "metropolis:base/blanco",
             "y": 0
         },
         "facing=east,part=tail": {
-            "model": "minecraft:block/air",
+            "model": "metropolis:base/blanco",
             "y": 90
         },
         "facing=south,part=tail": {
-            "model": "minecraft:block/air",
+            "model": "metropolis:base/blanco",
             "y": 180
         },
         "facing=west,part=tail": {
-            "model": "minecraft:block/air",
+            "model": "metropolis:base/blanco",
             "y": 270
         }
     }
