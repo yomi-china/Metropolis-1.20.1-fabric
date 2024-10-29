@@ -105,7 +105,7 @@ public class MetroClientNetwork {
 
     public static void registerGetMaxFareReceiver() {
         ClientPlayNetworking.registerGlobalReceiver(MetroServerNetwork.GET_MAX_FARE_RECEIVER, (client, handler, buf, responseSender) -> {
-            maxFare = buf.readVarInt();
+            maxFare = buf.readInt();
         });
     }
 

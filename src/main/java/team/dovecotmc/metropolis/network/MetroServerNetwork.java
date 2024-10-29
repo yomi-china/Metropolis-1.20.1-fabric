@@ -179,7 +179,7 @@ public class MetroServerNetwork {
     public static final Identifier GET_MAX_FARE_RECEIVER = new Identifier(Metropolis.MOD_ID, "get_max_fare_receiver");
     public static void registerMaxFareReceiver() {
         ServerPlayNetworking.registerGlobalReceiver(GET_MAX_FARE, (server, player, handler, buf, responseSender) -> {
-            ServerPlayNetworking.send(player, GET_MAX_FARE_RECEIVER, PacketByteBufs.create().writeVarInt(Metropolis.config.maxFare));
+            ServerPlayNetworking.send(player, GET_MAX_FARE_RECEIVER, PacketByteBufs.copy(PacketByteBufs.create().writeInt(Metropolis.config.maxFare)));
         });
     }
 
