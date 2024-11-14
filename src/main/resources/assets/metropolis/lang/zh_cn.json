@@ -20,7 +20,7 @@
     "gui.metropolis.ticket_vendor_1.tips_1": "᛫ 鸽舍是一个一个一个？",
     "gui.metropolis.ticket_vendor_1.tips_2": "᛫ 这个界面来自于JR东日本的EV23型多功能售票机",
     "gui.metropolis.ticket_vendor_1.tips_3": "᛫ 为了防止玩家忘记取票，闸机在取票后才开门，现实中并不是",
-    "gui.metropolis.ticket_vendor_1.tips_4": "᛫ 你可以使用染料点击站台门，然后用Ctrl+鼠标中键来获得染色后的门",
+    "gui.metropolis.ticket_vendor_1.tips_4": "᛫ 染色站台门尚未完成。",
     "gui.metropolis.ticket_vendor_1.tips_5": "᛫ 可以使用MTR的[刷子]来更改闸机的出入口",
     "gui.metropolis.ticket_vendor_1.tips_6": "᛫ 一种酷似神鹰航空涂装的绿色警戒方块在讨论后未被加入",
 
@@ -111,11 +111,11 @@
     "block.metropolis.ticket_vendor_panel": "售票机装饰",
     "tooltip.metropolis.ticket_vendor_panel": "§7装饰盖板",
     "block.metropolis.ticket_vendor_em10": "售票机",
-    "tooltip.metropolis.ticket_vendor_em10": "§7EM10",
+    "tooltip.metropolis.ticket_vendor_em10": "§7JR东日本EM10",
     "block.metropolis.ticket_vendor_ev23": "售票机",
-    "tooltip.metropolis.ticket_vendor_ev23": "§7EV23",
+    "tooltip.metropolis.ticket_vendor_ev23": "§7JR东日本EV23",
     "block.metropolis.fare_adj_ev23": "补票机",
-    "tooltip.metropolis.fare_adj_ev23": "§7EV23",
+    "tooltip.metropolis.fare_adj_ev23": "§7JR东日本EV23",
 
     "block.metropolis.ceiling_a": "吊顶",
     "block.metropolis.fluorescent_lamp": "日光灯",
@@ -131,13 +131,13 @@
     "block.metropolis.sign_no_photo": "告示牌（禁止拍照）",
 
     "block.metropolis.psd_jr_door_1": "站台屏蔽门",
-    "tooltip.metropolis.psd_jr_door_1": "JR风格",
+    "tooltip.metropolis.psd_jr_door_1": "日规矮半高",
     "block.metropolis.psd_jr_door_2": "站台屏蔽门",
-    "tooltip.metropolis.psd_jr_door_2": "JR风格（带窗）",
+    "tooltip.metropolis.psd_jr_door_2": "日规矮半高（带窗）",
     "block.metropolis.psd_jr_fence_1": "站台屏蔽门",
-    "tooltip.metropolis.psd_jr_fence_1": "JR风格",
+    "tooltip.metropolis.psd_jr_fence_1": "日规矮半高",
     "block.metropolis.psd_jr_fence_2": "站台屏蔽门",
-    "tooltip.metropolis.psd_jr_fence_2": "[WIP] JR风格",
+    "tooltip.metropolis.psd_jr_fence_2": "[WIP] 日规矮半高",
 
     "block.metropolis.itv_monitor": "站台ITV监控屏幕",
 
