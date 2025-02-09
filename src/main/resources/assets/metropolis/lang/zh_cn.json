@@ -15,7 +15,7 @@
     "gui.metropolis.ticket_vendor_1.button.buy_commuter": "购买月票",
     "gui.metropolis.ticket_vendor_1.button.buy_ic_card": "购买IC卡",
 
-    "gui.metropolis.ticket_vendor_1.tips": "᛫ 可以使用左下角的“退票”按钮退还单程票（功能尚未完成）\n᛫ 鸽舍是一个一个一个？\n᛫ 这个界面来自于JR东日本的EV23型多功能售票机\n᛫ 为了防止玩家忘记取票，闸机在取票后才开门，现实中并不是\n᛫ 可以使用染料点击站台门，然后用Ctrl+鼠标中键来获得染色后的门\n᛫ 可以使用MTR的[刷子]来更改闸机的出入口\n᛫ 一种酷似神鹰航空涂装的绿色警戒方块在讨论后未被加入",
+    "gui.metropolis.ticket_vendor_1.tips": "᛫ 可以使用左下角的“退票”按钮退还单程票（功能尚未完成）\n᛫ 鸽舍是一个一个一个？\n᛫ 这个界面来自于JR东日本的EV23型多功能售票机\n᛫ 为了防止玩家忘记取票，闸机在取票后才开门，现实中并不是\n᛫ 使用染料点击站台门，然后用Ctrl+鼠标中键来获得染色后的门\n᛫ 使用MTR的[刷子]来更改闸机的出入口\n᛫ 一种酷似神鹰航空涂装的绿色警戒方块在讨论后未被加入",
     "gui.metropolis.ticket_vendor_1.tips_0": "᛫ 可以使用左下角的“退票”按钮退还单程票（功能尚未完成）",
     "gui.metropolis.ticket_vendor_1.tips_1": "᛫ 鸽舍是一个一个一个？",
     "gui.metropolis.ticket_vendor_1.tips_2": "᛫ 这个界面来自于JR东日本的EV23型多功能售票机",
