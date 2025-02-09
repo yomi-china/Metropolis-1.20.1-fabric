@@ -29,6 +29,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 import team.dovecotmc.metropolis.Metropolis;
+import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
 import team.dovecotmc.metropolis.util.MetroBlockUtil;
 import team.dovecotmc.metropolis.util.MtrSoundUtil;
 
@@ -94,7 +95,7 @@ public class BlockSecurityDoor extends HorizontalFacingBlock {
                     if (open) {
                         world.playSound(null, pos, MtrSoundUtil.TICKET_BARRIER_CONCESSIONARY, SoundCategory.BLOCKS, 1f, 1f);
                     } else {
-                        player.sendMessage(Text.translatable("info.metropolis.has_danger_item"), true);
+                        player.sendMessage(MALocalizationUtil.translatableText("info.metropolis.has_danger_item"), true);
                     }
                     world.setBlockState(pos, state.with(OPEN, open));
                     world.createAndScheduleBlockTick(pos, state.getBlock(), 20);

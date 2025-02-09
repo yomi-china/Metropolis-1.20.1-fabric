@@ -16,6 +16,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import team.dovecotmc.metropolis.Metropolis;
+import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
 import team.dovecotmc.metropolis.item.ItemTicket;
 import team.dovecotmc.metropolis.item.MetroItems;
 
@@ -62,7 +63,7 @@ public class TicketVendorScreen3 extends Screen {
     protected String value = "0";
 
     public TicketVendorScreen3(BlockPos pos, Screen parentScreen, TicketVendorData data) {
-        super(Text.translatable("gui.metropolis.ticket_vendor_3.title"));
+        super(MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_3.title"));
         this.pos = pos;
         this.parentScreen = parentScreen;
         this.inputToHandle = new ArrayList<>();
@@ -127,7 +128,7 @@ public class TicketVendorScreen3 extends Screen {
 
                 matrices.push();
                 matrices.scale(scaleFactor, scaleFactor, scaleFactor);
-                Text price = Text.translatable("misc.metropolis.cost", String.valueOf(givenPrices[i0]));
+                Text price = MALocalizationUtil.translatableText("misc.metropolis.cost", String.valueOf(givenPrices[i0]));
                 textRenderer.draw(
                         matrices,
                         price,
@@ -169,7 +170,7 @@ public class TicketVendorScreen3 extends Screen {
 
         matrices.push();
         matrices.scale(scaleFactor, scaleFactor, scaleFactor);
-        Text continueText = Text.translatable("gui.metropolis.ticket_vendor_3.continue");
+        Text continueText = MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_3.continue");
         textRenderer.draw(
                 matrices,
                 continueText,
@@ -194,9 +195,9 @@ public class TicketVendorScreen3 extends Screen {
                                 TicketVendorPaymentData.EnumTicketVendorPaymentType.SINGLE_TRIP,
                                 cost,
                                 new Text[] {
-                                        Text.translatable("gui.metropolis.ticket_vendor_payment.single_trip.title"),
-                                        Text.translatable("gui.metropolis.ticket_vendor_payment.single_trip.ticket_value", cost),
-                                        Text.translatable("gui.metropolis.ticket_vendor_payment.single_trip.amount", 1),
+                                        MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_payment.single_trip.title"),
+                                        MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_payment.single_trip.ticket_value", cost),
+                                        MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_payment.single_trip.amount", 1),
                                 },
                                 ticketStack
                         ),
@@ -321,7 +322,7 @@ public class TicketVendorScreen3 extends Screen {
         // Title
         VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
         this.textRenderer.drawWithOutline(
-                Text.translatable("gui.metropolis.ticket_vendor_3.title").asOrderedText(),
+                MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_3.title").asOrderedText(),
                 intoTexturePosX(36),
                 intoTexturePosY(12),
                 0xFFFFFF,
@@ -337,7 +338,7 @@ public class TicketVendorScreen3 extends Screen {
         matrices.scale(scaleFactor, scaleFactor, scaleFactor);
         this.textRenderer.drawWithShadow(
                 matrices,
-                Text.translatable("misc.metropolis.cost", this.value),
+                MALocalizationUtil.translatableText("misc.metropolis.cost", this.value),
                 intoTexturePosX(38) / scaleFactor,
                 intoTexturePosY(90) / scaleFactor,
                 0xFFFFFF

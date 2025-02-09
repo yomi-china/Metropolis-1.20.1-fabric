@@ -19,6 +19,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
 import team.dovecotmc.metropolis.sittable.SittableRegistries;
 import team.dovecotmc.metropolis.sittable.SittableRegistry;
 
@@ -170,7 +171,7 @@ public class EntitySittable extends Entity {
         if (tick != 0) return;
         for (final var p : passengers) {
             final Text msg = isPoseValid(p.getPose()) ?
-                    isSeatValid(world, getBlockPos()) ? null : Text.translatable("sittable.metropolis.invaild") : Text.translatable("sittable.metropolis.wrong_pose");
+                    isSeatValid(world, getBlockPos()) ? null : MALocalizationUtil.translatableText("sittable.metropolis.invaild") : MALocalizationUtil.translatableText("sittable.metropolis.wrong_pose");
             if (msg == null) continue;
             p.stopRiding();
             p.setPos(p.getX(), getBlockPos().getY(), p.getZ());
@@ -242,7 +243,7 @@ public class EntitySittable extends Entity {
         if (o.isEmpty()) return false;
         final Vec3d vec = o.get();
         if (isOccupied(world, pos, vec)) {
-            player.sendMessage(Text.translatable("sittable.metropolis.info.occupied"), true);
+            player.sendMessage(MALocalizationUtil.translatableText("sittable.metropolis.info.occupied"), true);
             return true;
         }
         final EntitySittable sittable = new EntitySittable(world, pos.getX() + vec.x, pos.getY() + vec.y, pos.getZ() + vec.z);

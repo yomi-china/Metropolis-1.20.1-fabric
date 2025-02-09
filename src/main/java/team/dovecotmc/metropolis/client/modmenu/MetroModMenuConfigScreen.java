@@ -12,6 +12,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import team.dovecotmc.metropolis.Metropolis;
+import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
 import team.dovecotmc.metropolis.client.MetropolisClient;
 import team.dovecotmc.metropolis.client.config.MetroClientConfig;
 import team.dovecotmc.metropolis.config.MetroConfig;
@@ -39,7 +40,7 @@ public class MetroModMenuConfigScreen extends Screen {
     protected boolean pressed = false;
 
     public MetroModMenuConfigScreen(Screen parent) {
-        super(Text.translatable("metropolis.modmenu.config.title"));
+        super(MALocalizationUtil.translatableText("metropolis.modmenu.config.title"));
         this.parent = parent;
     }
 
@@ -73,7 +74,7 @@ public class MetroModMenuConfigScreen extends Screen {
 
         // Enable glowing texture
         matrices.push();
-        Text text = Text.translatable("config.metropolis.client.enable_glowing_texture");
+        Text text = MALocalizationUtil.translatableText("config.metropolis.client.enable_glowing_texture");
         textRenderer.draw(
                 matrices,
                 text,
@@ -113,7 +114,7 @@ public class MetroModMenuConfigScreen extends Screen {
         );
 
         // Enable station info overlay
-        text = Text.translatable("config.metropolis.client.enable_station_info_overlay");
+        text = MALocalizationUtil.translatableText("config.metropolis.client.enable_station_info_overlay");
         textRenderer.draw(
                 matrices,
                 text,

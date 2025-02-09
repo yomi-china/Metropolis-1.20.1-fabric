@@ -10,6 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
 
 import java.util.List;
 
@@ -32,6 +33,6 @@ public class ItemBlockWithTooltipShowStationHUD extends BlockItem implements IIt
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
-        tooltip.add(Text.translatable("tooltip." + Registry.ITEM.getId(this).toTranslationKey()).setStyle(this.style));
+        tooltip.add(MALocalizationUtil.translatableText("tooltip." + Registry.ITEM.getId(this).toTranslationKey()).setStyle(this.style));
     }
 }

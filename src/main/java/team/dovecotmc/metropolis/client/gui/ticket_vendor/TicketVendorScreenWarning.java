@@ -8,6 +8,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import team.dovecotmc.metropolis.Metropolis;
+import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
 import team.dovecotmc.metropolis.client.network.MetroClientNetwork;
 
 /**
@@ -27,7 +28,7 @@ public class TicketVendorScreenWarning extends Screen {
     protected final BlockPos pos;
 
     protected TicketVendorScreenWarning(BlockPos pos) {
-        super(Text.translatable("gui.metropolis.ticket_vendor_warning.title"));
+        super(MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_warning.title"));
         this.pos = pos;
     }
 
@@ -71,7 +72,7 @@ public class TicketVendorScreenWarning extends Screen {
 
         matrices.push();
         matrices.scale(scaleFactor, scaleFactor, scaleFactor);
-        Text warningTitle = Text.translatable("gui.metropolis.ticket_vendor_warning.title_warning");
+        Text warningTitle = MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_warning.title_warning");
         textRenderer.drawWithShadow(
                 matrices,
                 warningTitle,
@@ -85,7 +86,7 @@ public class TicketVendorScreenWarning extends Screen {
 
         matrices.push();
         matrices.scale(scaleFactor, scaleFactor, scaleFactor);
-        Text warningNoCard = Text.translatable("gui.metropolis.ticket_vendor_warning.warning_no_card");
+        Text warningNoCard = MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_warning.warning_no_card");
         textRenderer.drawWithShadow(
                 matrices,
                 warningNoCard,

@@ -14,6 +14,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import team.dovecotmc.metropolis.Metropolis;
+import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
 import team.dovecotmc.metropolis.client.network.MetroClientNetwork;
 
 /**
@@ -44,7 +45,7 @@ public class FareAdjPaymentScreen extends Screen {
     protected int tipId = 0;
 
     public FareAdjPaymentScreen(BlockPos pos, FareAdjPaymentData paymentData, Screen parentScreen) {
-        super(Text.translatable("gui.metropolis.fare_adj_payment.title"));
+        super(MALocalizationUtil.translatableText("gui.metropolis.fare_adj_payment.title"));
         this.pos = pos;
         this.paymentData = paymentData;
         this.parentScreen = parentScreen;
@@ -82,7 +83,7 @@ public class FareAdjPaymentScreen extends Screen {
         // Title
         VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
         this.textRenderer.drawWithOutline(
-                Text.translatable("gui.metropolis.fare_adj_payment.title").asOrderedText(),
+                MALocalizationUtil.translatableText("gui.metropolis.fare_adj_payment.title").asOrderedText(),
                 intoTexturePosX(36),
                 intoTexturePosY(12),
                 0xFFFFFF,
@@ -96,7 +97,7 @@ public class FareAdjPaymentScreen extends Screen {
         // Subtitle
         this.textRenderer.draw(
                 matrices,
-                Text.translatable("gui.metropolis.fare_adj_payment.subtitle"),
+                MALocalizationUtil.translatableText("gui.metropolis.fare_adj_payment.subtitle"),
                 intoTexturePosX(34),
                 intoTexturePosY(35),
                 0x3F3F3F
@@ -125,7 +126,7 @@ public class FareAdjPaymentScreen extends Screen {
         matrices.pop();
 
         // Description price
-        Text priceText = Text.translatable("gui.metropolis.fare_adj_payment.price", paymentData.value);
+        Text priceText = MALocalizationUtil.translatableText("gui.metropolis.fare_adj_payment.price", paymentData.value);
 //        scaleFactor = 1f;
         matrices.push();
         matrices.scale(scaleFactor, scaleFactor, scaleFactor);
@@ -145,7 +146,7 @@ public class FareAdjPaymentScreen extends Screen {
 
         boolean ableToPay = balance >= paymentData.value;
 
-        Text balanceText = Text.translatable("gui.metropolis.fare_adj_payment.balance", balance);
+        Text balanceText = MALocalizationUtil.translatableText("gui.metropolis.fare_adj_payment.balance", balance);
         this.textRenderer.drawWithShadow(
                 matrices,
                 balanceText,
@@ -207,7 +208,7 @@ public class FareAdjPaymentScreen extends Screen {
 
         matrices.push();
         matrices.scale(scaleFactor, scaleFactor, scaleFactor);
-        Text continueText = Text.translatable("gui.metropolis.fare_adj_payment.continue_button");
+        Text continueText = MALocalizationUtil.translatableText("gui.metropolis.fare_adj_payment.continue_button");
         textRenderer.draw(
                 matrices,
                 continueText,

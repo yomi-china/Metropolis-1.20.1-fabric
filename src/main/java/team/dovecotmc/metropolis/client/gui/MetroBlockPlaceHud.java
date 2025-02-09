@@ -17,6 +17,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ColorHelper;
+import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
 import team.dovecotmc.metropolis.client.MetropolisClient;
 import team.dovecotmc.metropolis.item.IItemShowStationHUD;
 import team.dovecotmc.metropolis.util.MtrStationUtil;
@@ -86,7 +87,7 @@ public class MetroBlockPlaceHud extends DrawableHelper {
                 RenderSystem.setShaderColor(r / 255f, g / 255f, b / 255f, 1);
 
                 int y0 = centerY - 8 - textRenderer.fontHeight;
-                Text pointedStation = Text.translatable("hud.title.pointed_station");
+                Text pointedStation = MALocalizationUtil.translatableText("hud.title.pointed_station");
                 int pointedStationWidth = textRenderer.getWidth(pointedStation);
                 textRenderer.drawWithShadow(
                         matrices,
