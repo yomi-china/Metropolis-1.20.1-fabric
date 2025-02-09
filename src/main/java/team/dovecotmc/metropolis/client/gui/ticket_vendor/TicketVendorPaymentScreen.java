@@ -221,7 +221,7 @@ public class TicketVendorPaymentScreen extends Screen {
         if (thisTabHovering && pressed && ableToPay) {
             playDownSound(MinecraftClient.getInstance().getSoundManager());
             client.setScreen(null);
-            if (paymentData.type == TicketVendorPaymentData.EnumTicketVendorPaymentType.SINGLE_TRIP) {
+            if (paymentData.type == TicketVendorPaymentData.EnumTicketVendorPaymentType.SINGLE_TRIP || paymentData.type == TicketVendorPaymentData.EnumTicketVendorPaymentType.IC_CARD) {
                 MetroClientNetwork.ticketVendorResult(pos, paymentData.resultStack, paymentData.value);
             } else {
                 MetroClientNetwork.ticketVendorClose(pos, paymentData.resultStack, paymentData.value);

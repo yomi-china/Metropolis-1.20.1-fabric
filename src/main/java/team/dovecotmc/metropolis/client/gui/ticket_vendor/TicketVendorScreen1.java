@@ -61,8 +61,6 @@ public class TicketVendorScreen1 extends Screen {
         super(MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_1.title"));
         this.pos = pos;
         this.data = data;
-//        this.ticketItem = ticketItem;
-//        InventoryScreen
     }
 
     @Override
@@ -76,23 +74,6 @@ public class TicketVendorScreen1 extends Screen {
         this.lastPressing = false;
         this.mouseX = 0;
         this.mouseY = 0;
-//        ButtonWidget buttonTest = new ButtonWidget(0, 0, 128, 20, MALocalizationUtil.translatableText("metropolis.screen.ticket_machine.button.test"), button -> {
-////            NbtCompound nbt = this.ticketItem.getOrCreateNbt();
-////            nbt.putInt(ItemTicket.REMAIN_MONEY, nbt.getInt(ItemTicket.REMAIN_MONEY) + 1);
-//            System.out.println(114514);
-//        });
-//        addDrawableChild(buttonTest);
-//        SliderWidget sliderWidget = new SliderWidget(0, 20, 128, 20, Text.literal("wow"), 0.5) {
-//            @Override
-//            protected void updateMessage() {
-//            }
-//
-//            @Override
-//            protected void applyValue() {
-//
-//            }
-//        };
-//        addDrawableChild(sliderWidget);
     }
 
     @Override
@@ -395,14 +376,22 @@ public class TicketVendorScreen1 extends Screen {
             if (this.data.cardStack.isEmpty()) {
                 this.client.setScreen(new TicketVendorScreenWarning(pos));
             } else {
-                this.client.setScreen(new TicketVendorScreen4(pos, List.of(this), this.data));
+                this.client.setScreen(new TicketVendorScreen4(pos, this, this.data));
             }
+        }
+
+        if (grayBottomHovering && pressed) {
+            if (this.client.world != null) {
+                playDownSound(MinecraftClient.getInstance().getSoundManager());
+            }
+
+            this.client.setScreen(new TicketVendorScreenBuyIC(pos, this, this.data));
         }
 
         super.render(matrices, mouseX, mouseY, delta);
 
         // TODO: Other screens
-        if (grayTopHovering || grayBottomHovering) {
+        if (grayTopHovering) {
             this.renderTooltip(matrices, Text.literal("Coming s∞n..."), mouseX, mouseY);
         }
 
@@ -412,27 +401,6 @@ public class TicketVendorScreen1 extends Screen {
             pressed = false;
         }
         lastPressing = pressing;
-
-//        MatrixStack matrixStack = RenderSystem.getModelViewStack();
-//        RenderSystem.applyModelViewMatrix();
-//        matrixStack.push();
-//
-//        float time = 0;
-//        if (mc.world != null) {
-//            time = mc.world.getTime();
-//        }
-//
-//        matrixStack.translate(0f, MathHelper.sin((time + mc.getTickDelta()) / 4f) * 4f, 0f);
-//        int scaleFactor = 4;
-//        matrixStack.scale(scaleFactor, scaleFactor, scaleFactor);
-//
-//        ItemStack stack = new ItemStack(MetroItems.ITEM_SINGLE_TRIP_TICKET);
-//        itemRenderer.renderInGui(stack, (width / 2 - 16 * scaleFactor / 2) / scaleFactor, (height / 2 - 16 * scaleFactor / 2) / scaleFactor);
-//
-//        itemRenderer.renderGuiItemOverlay(textRenderer, stack, (width / 2 - 16 * scaleFactor / 2) / scaleFactor, (height / 2 - 16 * scaleFactor / 2) / scaleFactor);
-//
-//        matrixStack.pop();
-//        RenderSystem.applyModelViewMatrix();
     }
 
     @Override

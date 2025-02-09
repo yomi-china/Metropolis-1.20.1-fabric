@@ -17,8 +17,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import team.dovecotmc.metropolis.Metropolis;
 import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
-import team.dovecotmc.metropolis.client.network.MetroClientNetwork;
 import team.dovecotmc.metropolis.item.ItemCard;
+import team.dovecotmc.metropolis.item.ItemTicket;
+import team.dovecotmc.metropolis.item.MetroItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,30 +30,29 @@ import java.util.Objects;
  * @project Metropolis
  * @copyright Copyright © 2024 Arrokoth All Rights Reserved.
  */
-public class TicketVendorScreen4 extends Screen {
-    private static final Identifier BG_TEXTURE_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_4/ticket_vendor_4_base.png");
+public class TicketVendorScreenBuyIC extends Screen {
+    private static final Identifier BG_TEXTURE_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_buy_ic/ticket_vendor_buy_ic_base.png");
     protected static final int BG_TEXTURE_WIDTH = 256;
     protected static final int BG_TEXTURE_HEIGHT = 196;
 
-    private static final Identifier BUTTON_UPPER_TEXTURE_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_4/button_upper.png");
-    private static final Identifier BUTTON_UPPER_TEXTURE_HOVER_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_4/button_upper_hover.png");
+    private static final Identifier BUTTON_UPPER_TEXTURE_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_buy_ic/button_upper.png");
+    private static final Identifier BUTTON_UPPER_TEXTURE_HOVER_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_buy_ic/button_upper_hover.png");
     protected static final int BUTTON_UPPER_TEXTURE_WIDTH = 64;
     protected static final int BUTTON_UPPER_TEXTURE_HEIGHT = 14;
 
-    private static final Identifier BUTTON_CONTINUE_TEXTURE_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_4/button_continue.png");
-    private static final Identifier BUTTON_CONTINUE_TEXTURE_HOVER_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_4/button_continue_hover.png");
+    private static final Identifier BUTTON_CONTINUE_TEXTURE_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_buy_ic/button_continue.png");
+    private static final Identifier BUTTON_CONTINUE_TEXTURE_HOVER_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_buy_ic/button_continue_hover.png");
     protected static final int BUTTON_CONTINUE_TEXTURE_WIDTH = 60;
     protected static final int BUTTON_CONTINUE_TEXTURE_HEIGHT = 16;
 
-    private static final Identifier BUTTON_NUMBER_TEXTURE_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_4/button_number.png");
-    private static final Identifier BUTTON_NUMBER_TEXTURE_HOVER_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_4/button_number_hover.png");
-    private static final Identifier BUTTON_NUMBER_TEXTURE_DOWN_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_4/button_number_down.png");
+    private static final Identifier BUTTON_NUMBER_TEXTURE_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_buy_ic/button_number.png");
+    private static final Identifier BUTTON_NUMBER_TEXTURE_HOVER_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_buy_ic/button_number_hover.png");
+    private static final Identifier BUTTON_NUMBER_TEXTURE_DOWN_ID = new Identifier(Metropolis.MOD_ID, "textures/gui/ticket_vendor_buy_ic/button_number_down.png");
     protected static final int BUTTON_NUMBER_TEXTURE_WIDTH = 18;
     protected static final int BUTTON_NUMBER_TEXTURE_HEIGHT = 14;
 
-    public final Screen screen;
+    protected final Screen parentScreen;
     protected final BlockPos pos;
-    protected final TicketVendorData data;
     public final List<Integer> inputToHandle;
     public final List<Integer> inputToHandle2;
 
@@ -63,23 +63,22 @@ public class TicketVendorScreen4 extends Screen {
     protected boolean pressed = false;
     protected String value = "0";
 
-    public TicketVendorScreen4(BlockPos pos, Screen screen, TicketVendorData data) {
-        super(MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_4.title"));
+    public TicketVendorScreenBuyIC(BlockPos pos, Screen parentScreen, TicketVendorData data) {
+        super(MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_buy_ic.title"));
         this.pos = pos;
-        this.data = data;
-        this.screen = screen;
+        this.parentScreen = parentScreen;
         this.inputToHandle = new ArrayList<>();
         this.inputToHandle2 = new ArrayList<>();
     }
 
     @Override
     protected void init() {
-        MetroClientNetwork.updateCurrencyItem();
     }
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.fillGradient(matrices, 0, 0, this.width, this.height, -1072689136, -804253680);
+//        renderTooltip();
 
         RenderSystem.assertOnRenderThread();
         RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -172,7 +171,7 @@ public class TicketVendorScreen4 extends Screen {
 
         matrices.push();
         matrices.scale(scaleFactor, scaleFactor, scaleFactor);
-        Text continueText = MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_4.continue");
+        Text continueText = MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_buy_ic.continue");
         textRenderer.draw(
                 matrices,
                 continueText,
@@ -185,33 +184,27 @@ public class TicketVendorScreen4 extends Screen {
         if (continueHovering && pressed) {
             playButtonSound(MinecraftClient.getInstance().getSoundManager());
 
-            ItemStack ticketStack = data.cardStack;
+            ItemStack ticketStack = new ItemStack(MetroItems.ITEM_CARD);
+            NbtCompound nbt = ticketStack.getOrCreateNbt();
+            int cost = Integer.parseInt(value);
+            nbt.putInt(ItemCard.BALANCE, cost);
 
-            int balance = 0;
-            if (client != null && client.player != null) {
-                // TODO: Configurable item
-                balance = client.player.getInventory().count(MetroClientNetwork.currencyItem);
+            if (this.client != null) {
+                this.client.setScreen(new TicketVendorPaymentScreen(
+                        pos,
+                        new TicketVendorPaymentData(
+                                TicketVendorPaymentData.EnumTicketVendorPaymentType.IC_CARD,
+                                cost,
+                                new Text[] {
+                                        MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_payment.buy_ic.title"),
+                                        MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_payment.buy_ic.ticket_value", cost),
+                                        MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_payment.amount", 1),
+                                },
+                                ticketStack
+                        ),
+                        this
+                ));
             }
-
-            if (balance >= Integer.parseInt(value)) {
-                NbtCompound nbt = ticketStack.getOrCreateNbt();
-                nbt.putInt(ItemCard.BALANCE, nbt.getInt(ItemCard.BALANCE) + Integer.parseInt(value));
-                nbt.putInt(ItemCard.MAX_VALUE, nbt.getInt(ItemCard.BALANCE));
-            }
-
-            this.client.setScreen(new TicketVendorPaymentScreen(
-                    pos,
-                    new TicketVendorPaymentData(
-                            TicketVendorPaymentData.EnumTicketVendorPaymentType.IC_CARD_CHARGE,
-                            Integer.parseInt(value),
-                            new Text[] {
-                                    MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_payment.ic_charge.title"),
-                                    MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_payment.ic_charge.ticket_value", this.value),
-                            },
-                            ticketStack
-                    ),
-                    this
-            ));
         }
 
 //        scaleFactor = 8f / this.textRenderer.fontHeight;
@@ -330,7 +323,7 @@ public class TicketVendorScreen4 extends Screen {
         // Title
         VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
         this.textRenderer.drawWithOutline(
-                MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_4.title").asOrderedText(),
+                MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_buy_ic.title").asOrderedText(),
                 intoTexturePosX(36),
                 intoTexturePosY(12),
                 0xFFFFFF,
@@ -360,11 +353,7 @@ public class TicketVendorScreen4 extends Screen {
         super.render(matrices, mouseX, mouseY, delta);
 
         if (pressing) {
-            if (!lastPressing) {
-                pressed = true;
-            } else {
-                pressed = false;
-            }
+            pressed = !lastPressing;
         } else {
             pressed = false;
         }
@@ -428,7 +417,7 @@ public class TicketVendorScreen4 extends Screen {
     @Override
     public void close() {
         if (this.client != null) {
-            this.client.setScreen(screen);
+            this.client.setScreen(this.parentScreen);
         }
     }
 
