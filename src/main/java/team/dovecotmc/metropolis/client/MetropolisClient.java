@@ -1,5 +1,6 @@
 package team.dovecotmc.metropolis.client;
 
+import mtr.client.CustomResources;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
