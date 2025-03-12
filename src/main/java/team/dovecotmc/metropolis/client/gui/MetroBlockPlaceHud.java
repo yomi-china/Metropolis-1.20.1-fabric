@@ -100,7 +100,7 @@ public class MetroBlockPlaceHud extends DrawableHelper {
                 y0 = centerY + 8;
 
                 String[] stationNames = station.name.split("\\|");
-                Text stationFirstName = Text.literal(stationNames[0]);
+                Text stationFirstName = MALocalizationUtil.literalText(stationNames[0]);
                 int stationFirstNameWidth = textRenderer.getWidth(stationFirstName);
                 textRenderer.drawWithShadow(
                         matrices,
@@ -111,7 +111,7 @@ public class MetroBlockPlaceHud extends DrawableHelper {
                 );
 
                 if (stationNames.length > 1) {
-                    Text stationSecondName = Text.literal(stationNames[1]);
+                    Text stationSecondName = MALocalizationUtil.literalText(stationNames[1]);
                     int stationSecondNameWidth = textRenderer.getWidth(stationSecondName);
                     y0 += textRenderer.fontHeight + 2;
                     textRenderer.drawWithShadow(

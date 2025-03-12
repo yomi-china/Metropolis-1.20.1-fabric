@@ -146,7 +146,7 @@ public class FareAdjScreenMain extends Screen {
         Collections.reverse(texts);
         for (String text : texts) {
             this.textRenderer.drawWithOutline(
-                    Text.literal(text).asOrderedText(),
+                    MALocalizationUtil.literalText(text).asOrderedText(),
                     x0 + (BUTTON_BIG_WIDTH / 2f - textRenderer.getWidth(text) / 2f),
                     y0 + (BUTTON_BIG_HEIGHT - 20 - textRenderer.fontHeight * i0 - 2 * i0),
                     0xFFFFFF,
@@ -193,7 +193,7 @@ public class FareAdjScreenMain extends Screen {
         Collections.reverse(texts);
         for (String text : texts) {
             this.textRenderer.drawWithOutline(
-                    Text.literal(text).asOrderedText(),
+                    MALocalizationUtil.literalText(text).asOrderedText(),
                     x1 + (BUTTON_BIG_WIDTH / 2f - textRenderer.getWidth(text) / 2f),
                     y0 + (BUTTON_BIG_HEIGHT - 20 - textRenderer.fontHeight * i0 - 2 * i0),
                     0xFFFFFF,
@@ -236,7 +236,7 @@ public class FareAdjScreenMain extends Screen {
         Collections.reverse(texts);
         for (String text : texts) {
             this.textRenderer.drawWithOutline(
-                    Text.literal(text).asOrderedText(),
+                    MALocalizationUtil.literalText(text).asOrderedText(),
                     x0 + 12,
                     y1 + (BUTTON_WIDE_HEIGHT - 24 - textRenderer.fontHeight * i0 - 2 * i0),
                     0xFFFFFF,

@@ -247,14 +247,14 @@ public class TicketVendorScreen3 extends Screen {
 
                 matrices.push();
                 matrices.scale(scaleFactor, scaleFactor, scaleFactor);
-                Text text = Text.literal(String.valueOf(i1));
+                Text text = MALocalizationUtil.literalText(String.valueOf(i1));
 
                 if (i1 == 10) {
-                    text = Text.literal("#");
+                    text = MALocalizationUtil.literalText("#");
                 } else if (i1 == 11) {
-                    text = Text.literal("0");
+                    text = MALocalizationUtil.literalText("0");
                 } else if (i1 == 12) {
-                    text = Text.literal("←");
+                    text = MALocalizationUtil.literalText("←");
                 }
 
                 this.textRenderer.draw(

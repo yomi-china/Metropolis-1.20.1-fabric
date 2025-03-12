@@ -256,7 +256,7 @@ public class TicketVendorScreen2 extends Screen {
                 // Station right arrow
                 textRenderer.draw(
                         matrices,
-                        Text.literal(">"),
+                        MALocalizationUtil.literalText(">"),
                         intoTexturePosX(x0 + STATION_TAB_BASE_WIDTH - 8) / scaleFactor,
                         intoTexturePosY(y0 + STATION_TAB_BASE_HEIGHT * i0 + 5) / scaleFactor,
                         0x3F3F3F
@@ -346,7 +346,7 @@ public class TicketVendorScreen2 extends Screen {
 
             matrices.push();
             matrices.scale(scaleFactor, scaleFactor, scaleFactor);
-            Text cost = Text.literal(MALocalizationUtil.translatableText("misc.metropolis.cost", valuesToSelect[i]).getString());
+            Text cost = MALocalizationUtil.literalText(MALocalizationUtil.translatableText("misc.metropolis.cost", valuesToSelect[i]).getString());
             textRenderer.draw(
                     matrices,
                     cost,

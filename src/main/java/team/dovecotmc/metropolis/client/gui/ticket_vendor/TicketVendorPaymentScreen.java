@@ -158,14 +158,14 @@ public class TicketVendorPaymentScreen extends Screen {
         // Item unit
         this.textRenderer.drawWithShadow(
                 matrices,
-                Text.literal("×"),
+                MALocalizationUtil.literalText("×"),
                 intoTexturePosX(x0 + Math.max(textRenderer.getWidth(balanceText), textRenderer.getWidth(priceText)) + 4) / scaleFactor,
                 intoTexturePosY(y1 + 2) / scaleFactor,
                 0xFFFFFF
         );
         this.textRenderer.drawWithShadow(
                 matrices,
-                Text.literal("×"),
+                MALocalizationUtil.literalText("×"),
                 intoTexturePosX(x0 + Math.max(textRenderer.getWidth(balanceText), textRenderer.getWidth(priceText)) + 4) / scaleFactor,
                 intoTexturePosY(y1 + 18) / scaleFactor,
                 ableToPay ? 0xFFFFFF : 0xFF3F3F
@@ -174,12 +174,12 @@ public class TicketVendorPaymentScreen extends Screen {
 
         this.itemRenderer.renderInGui(
                 new ItemStack(MetroClientNetwork.currencyItem),
-                intoTexturePosX(x0 + Math.max(textRenderer.getWidth(balanceText), textRenderer.getWidth(priceText)) + 4 + textRenderer.getWidth(Text.literal("×"))),
+                intoTexturePosX(x0 + Math.max(textRenderer.getWidth(balanceText), textRenderer.getWidth(priceText)) + 4 + textRenderer.getWidth(MALocalizationUtil.literalText("×"))),
                 intoTexturePosY(y1 - 4 + 1)
         );
         this.itemRenderer.renderInGui(
                 new ItemStack(MetroClientNetwork.currencyItem),
-                intoTexturePosX(x0 + Math.max(textRenderer.getWidth(balanceText), textRenderer.getWidth(priceText)) + 4 + textRenderer.getWidth(Text.literal("×"))),
+                intoTexturePosX(x0 + Math.max(textRenderer.getWidth(balanceText), textRenderer.getWidth(priceText)) + 4 + textRenderer.getWidth(MALocalizationUtil.literalText("×"))),
                 intoTexturePosY(y1 - 4 + 16 + 1)
         );
 

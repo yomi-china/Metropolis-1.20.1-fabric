@@ -47,12 +47,12 @@ public class ItemDynamicBridgeCreator extends ItemNodeModifierBase {
             NbtCompound nbt = context.getStack().getOrCreateNbt();
             if (state.getBlock() != Blocks.RAIL_NODE.get()) {
                 if (Objects.requireNonNull(context.getPlayer()).isSneaking()) {
-//                    context.getPlayer().sendMessage(Text.literal("Width: " + (nbt.getInt(WIDTH) - 2)));
+//                    context.getPlayer().sendMessage(MALocalizationUtil.literalText("Width: " + (nbt.getInt(WIDTH) - 2)));
 //                    nbt.putInt(WIDTH, nbt.getInt(WIDTH) - 2);
-                    context.getPlayer().sendMessage(Text.literal("Block: " + MALocalizationUtil.translatableText(state.getBlock().getTranslationKey()).getString()));
+                    context.getPlayer().sendMessage(MALocalizationUtil.literalText("Block: " + MALocalizationUtil.translatableText(state.getBlock().getTranslationKey()).getString()));
                     nbt.putInt(BLOCK_ID, Block.getRawIdFromState(state));
                 } else {
-                    context.getPlayer().sendMessage(Text.literal("Width: " + (nbt.getInt(WIDTH) + 2)));
+                    context.getPlayer().sendMessage(MALocalizationUtil.literalText("Width: " + (nbt.getInt(WIDTH) + 2)));
                     nbt.putInt(WIDTH, nbt.getInt(WIDTH) + 2);
                 }
             } else {
@@ -66,13 +66,13 @@ public class ItemDynamicBridgeCreator extends ItemNodeModifierBase {
                     if (!railwayData.containsRail(posStart, posEnd)) {
                         context.getPlayer().sendMessage(MALocalizationUtil.translatableText("gui.mtr.rail_not_found_action"), true);
                     } else if (state1 == null) {
-                        context.getPlayer().sendMessage(mtr.mappings.Text.literal("No block selected"), true);
+                        context.getPlayer().sendMessage(mtr.mappings.MALocalizationUtil.literalText("No block selected"), true);
                     } else {
                         nbt.remove(POS_START);
                         railwayData.railwayDataRailActionsModule.markRailForBridge(context.getPlayer(), posStart, posEnd, (nbt.getInt(WIDTH) + 1) / 2, state1);
                     }
                 } else {
-                    context.getPlayer().sendMessage(Text.literal("First pos: " + context.getBlockPos().toShortString()));
+                    context.getPlayer().sendMessage(MALocalizationUtil.literalText("First pos: " + context.getBlockPos().toShortString()));
                     nbt.putLong(POS_START, context.getBlockPos().asLong());
                 }
             }
@@ -113,7 +113,7 @@ public class ItemDynamicBridgeCreator extends ItemNodeModifierBase {
         String[] textSplit = MALocalizationUtil.translatableText(state.isAir() ? "tooltip.mtr.shift_right_click_to_select_material" : "tooltip.mtr.shift_right_click_to_clear", MinecraftClient.getInstance().options.sneakKey.getBoundKeyLocalizedText(), MALocalizationUtil.translatableText(((Block)mtr.Blocks.RAIL_NODE.get()).getTranslationKey())).getString().split("\\|");
 
         for (String text : textSplit) {
-            tooltip.add(mtr.mappings.Text.literal(text).setStyle(Style.EMPTY.withColor(Formatting.GRAY).withFormatting(Formatting.ITALIC)));
+            tooltip.add(mtr.mappings.MALocalizationUtil.literalText(text).setStyle(Style.EMPTY.withColor(Formatting.GRAY).withFormatting(Formatting.ITALIC)));
         }
 
         tooltip.add(MALocalizationUtil.translatableText("tooltip.mtr.selected_material", MALocalizationUtil.translatableText(state.getBlock().getTranslationKey())).setStyle(Style.EMPTY.withColor(Formatting.GREEN)));

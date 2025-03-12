@@ -392,7 +392,7 @@ public class TicketVendorScreen1 extends Screen {
 
         // TODO: Other screens
         if (grayTopHovering) {
-            this.renderTooltip(matrices, Text.literal("Coming s∞n..."), mouseX, mouseY);
+            this.renderTooltip(matrices, MALocalizationUtil.literalText("Coming s∞n..."), mouseX, mouseY);
         }
 
         if (pressing) {

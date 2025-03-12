@@ -63,7 +63,7 @@ public class MetroModMenuConfigScreen extends Screen {
 
         matrices.push();
         matrices.scale(2f, 2f, 2f);
-        Text name = Text.literal(mod.getMetadata().getName());
+        Text name = MALocalizationUtil.literalText(mod.getMetadata().getName());
         textRenderer.drawWithShadow(
                 matrices,
                 name,
