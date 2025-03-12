@@ -8,10 +8,10 @@ import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.ResourceManager;
 import team.dovecotmc.metropolis.block.entity.MetroBlockEntities;
 import team.dovecotmc.metropolis.client.block.entity.*;
 import team.dovecotmc.metropolis.Metropolis;
@@ -49,12 +49,12 @@ public class MetropolisClient implements ClientModInitializer {
 
         MetroClientNetwork.registerAll();
 
-        BlockRenderLayerMap.INSTANCE.putBlock(MetroBlocks.BLOCK_TICKET_VENDOR_EM10, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(MetroBlocks.BLOCK_TICKET_VENDOR_EV23, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(MetroBlocks.BLOCK_FARE_ADJ_EV23_YELLOW, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(MetroBlocks.BLOCK_TICKET_VENDOR_PANEL, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(MetroBlocks.BLOCK_TICKET_VENDOR_TOP, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(MetroBlocks.BLOCK_SECURITY_INSPECTION_MACHINE, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MetroBlocks.BLOCK_TICKET_VENDOR_EM10, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MetroBlocks.BLOCK_TICKET_VENDOR_EV23, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MetroBlocks.BLOCK_FARE_ADJ_EV23_YELLOW, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MetroBlocks.BLOCK_TICKET_VENDOR_PANEL, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MetroBlocks.BLOCK_TICKET_VENDOR_TOP, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MetroBlocks.BLOCK_SECURITY_INSPECTION_MACHINE, RenderType.cutout());
 
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(rm -> new MetroModelProvicer());
 
@@ -70,7 +70,7 @@ public class MetropolisClient implements ClientModInitializer {
         EntityRendererRegistry.register(MetroEntities.SITTABLE, EntitySittableRenderer::new);
 
         HudRenderCallback.EVENT.register(BLOCK_PLACE_HUD::render);
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListener());
+        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListener());
 
 //        if (IS_ALPHA && !FabricLoader.getInstance().isDevelopmentEnvironment()) {
 //            HudRenderCallback.EVENT.register(ALPHA_WARNING_HUD::render);
@@ -79,12 +79,12 @@ public class MetropolisClient implements ClientModInitializer {
 
     private static class ResourceReloadListener implements SimpleSynchronousResourceReloadListener {
         @Override
-        public Identifier getFabricId() {
-            return new Identifier(Metropolis.MOD_ID, "metropolis_custom_resources");
+        public ResourceLocation getFabricId() {
+            return new ResourceLocation(Metropolis.MOD_ID, "metropolis_custom_resources");
         }
 
         @Override
-        public void reload(ResourceManager manager) {
+        public void onResourceManagerReload(ResourceManager manager) {
             Metropolis.LOGGER.info("Reloading!");
             MetropolisClient.config = MetroClientConfig.load();
         }

@@ -2,11 +2,11 @@ package team.dovecotmc.metropolis.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.block.Block;
-import net.minecraft.block.Material;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Material;
 import team.dovecotmc.metropolis.Metropolis;
 
 import java.util.Objects;
@@ -17,9 +17,9 @@ import java.util.Objects;
  * @copyright Copyright © 2024 Arrokoth All Rights Reserved.
  */
 public class MetroBlockTagsGenerator extends FabricTagProvider<Block> {
-    private static final TagKey<Block> PICKAXE_KEY = TagKey.of(Registry.BLOCK_KEY, Identifier.of("data", "mineable/pickaxe"));
-    private static final TagKey<Block> NEEDS_STONE_TOOL = TagKey.of(Registry.BLOCK_KEY, Identifier.of("data", "mineable/needs_stone_tool"));
-    private static final TagKey<Block> NEEDS_IRON_TOOL = TagKey.of(Registry.BLOCK_KEY, Identifier.of("data", "mineable/needs_iron_tool"));
+    private static final TagKey<Block> PICKAXE_KEY = TagKey.create(Registry.BLOCK_REGISTRY, ResourceLocation.tryBuild("data", "mineable/pickaxe"));
+    private static final TagKey<Block> NEEDS_STONE_TOOL = TagKey.create(Registry.BLOCK_REGISTRY, ResourceLocation.tryBuild("data", "mineable/needs_stone_tool"));
+    private static final TagKey<Block> NEEDS_IRON_TOOL = TagKey.create(Registry.BLOCK_REGISTRY, ResourceLocation.tryBuild("data", "mineable/needs_iron_tool"));
 
     public MetroBlockTagsGenerator(FabricDataGenerator dataGenerator) {
         super(dataGenerator, Registry.BLOCK);
@@ -27,7 +27,7 @@ public class MetroBlockTagsGenerator extends FabricTagProvider<Block> {
 
     @Override
     protected void generateTags() {
-        for (Identifier id : this.registry.getIds()) {
+        for (ResourceLocation id : this.registry.keySet()) {
             if (!Objects.equals(id.getNamespace(), Metropolis.MOD_ID))
                 continue;
 
@@ -35,18 +35,18 @@ public class MetroBlockTagsGenerator extends FabricTagProvider<Block> {
             if (block == null)
                 continue;
 
-            if (block.getDefaultState().getMaterial().equals(Material.STONE)) {
-                getOrCreateTagBuilder(PICKAXE_KEY)
+            if (block.defaultBlockState().getMaterial().equals(Material.STONE)) {
+                tag(PICKAXE_KEY)
                         .add(block);
 //                getOrCreateTagBuilder(NEEDS_STONE_TOOL)
 //                        .add(block);
-            } else if (block.getDefaultState().getMaterial().equals(Material.METAL)) {
-                getOrCreateTagBuilder(PICKAXE_KEY)
+            } else if (block.defaultBlockState().getMaterial().equals(Material.METAL)) {
+                tag(PICKAXE_KEY)
                         .add(block);
-                getOrCreateTagBuilder(NEEDS_STONE_TOOL)
+                tag(NEEDS_STONE_TOOL)
                         .add(block);
             } else {
-                Metropolis.LOGGER.info("Unexpected material: " + block.getDefaultState().getMaterial());
+                Metropolis.LOGGER.info("Unexpected material: " + block.defaultBlockState().getMaterial());
             }
         }
     }
