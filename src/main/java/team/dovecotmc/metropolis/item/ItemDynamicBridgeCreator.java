@@ -66,7 +66,7 @@ public class ItemDynamicBridgeCreator extends ItemNodeModifierBase {
                     if (!railwayData.containsRail(posStart, posEnd)) {
                         context.getPlayer().sendMessage(MALocalizationUtil.translatableText("gui.mtr.rail_not_found_action"), true);
                     } else if (state1 == null) {
-                        context.getPlayer().sendMessage(mtr.mappings.MALocalizationUtil.literalText("No block selected"), true);
+                        context.getPlayer().sendMessage(MALocalizationUtil.literalText("No block selected"), true);
                     } else {
                         nbt.remove(POS_START);
                         railwayData.railwayDataRailActionsModule.markRailForBridge(context.getPlayer(), posStart, posEnd, (nbt.getInt(WIDTH) + 1) / 2, state1);
@@ -113,7 +113,7 @@ public class ItemDynamicBridgeCreator extends ItemNodeModifierBase {
         String[] textSplit = MALocalizationUtil.translatableText(state.isAir() ? "tooltip.mtr.shift_right_click_to_select_material" : "tooltip.mtr.shift_right_click_to_clear", MinecraftClient.getInstance().options.sneakKey.getBoundKeyLocalizedText(), MALocalizationUtil.translatableText(((Block)mtr.Blocks.RAIL_NODE.get()).getTranslationKey())).getString().split("\\|");
 
         for (String text : textSplit) {
-            tooltip.add(mtr.mappings.MALocalizationUtil.literalText(text).setStyle(Style.EMPTY.withColor(Formatting.GRAY).withFormatting(Formatting.ITALIC)));
+            tooltip.add(MALocalizationUtil.literalText(text).setStyle(Style.EMPTY.withColor(Formatting.GRAY).withFormatting(Formatting.ITALIC)));
         }
 
         tooltip.add(MALocalizationUtil.translatableText("tooltip.mtr.selected_material", MALocalizationUtil.translatableText(state.getBlock().getTranslationKey())).setStyle(Style.EMPTY.withColor(Formatting.GREEN)));

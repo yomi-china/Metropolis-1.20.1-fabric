@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import team.dovecotmc.metropolis.Metropolis;
+import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
 
 import java.util.Optional;
 
