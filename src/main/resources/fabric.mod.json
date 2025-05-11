@@ -3,7 +3,7 @@
     "id": "metropolis",
     "version": "${version}",
     "name": "Metropolis",
-    "description": "Chemin de Fer Métropolitain",
+    "description": "Chemin de Fer Métropolitain\nTraditional Chinese localization by HQIDK",
     "authors": [
         "Arrokoth233",
         "Radekemia"
