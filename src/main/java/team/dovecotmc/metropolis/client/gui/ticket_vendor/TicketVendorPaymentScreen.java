@@ -140,7 +140,6 @@ public class TicketVendorPaymentScreen extends Screen {
 
         int balance = 0;
         if (minecraft != null && minecraft.player != null) {
-            // TODO: Configurable item
             balance = minecraft.player.getInventory().countItem(MetroClientNetwork.currencyItem);
         }
 

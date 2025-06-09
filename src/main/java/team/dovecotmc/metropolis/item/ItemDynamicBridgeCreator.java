@@ -11,7 +11,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -19,7 +21,9 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
+import team.dovecotmc.metropolis.client.gui.BridgeCreatorConfigurationScreen;
 
 import java.util.List;
 import java.util.Objects;
@@ -45,14 +49,19 @@ public class ItemDynamicBridgeCreator extends ItemNodeModifierBase {
         if (!context.getLevel().isClientSide()) {
             BlockState state = context.getLevel().getBlockState(context.getClickedPos());
             CompoundTag nbt = context.getItemInHand().getOrCreateTag();
+            Player player = context.getPlayer();
+
+            if (player == null)
+                return InteractionResult.SUCCESS;
+
             if (state.getBlock() != Blocks.RAIL_NODE.get()) {
-                if (Objects.requireNonNull(context.getPlayer()).isShiftKeyDown()) {
-//                    context.getPlayer().sendMessage(MALocalizationUtil.literalText("Width: " + (nbt.getInt(WIDTH) - 2)));
+                if (Objects.requireNonNull(player).isShiftKeyDown()) {
+//                    player.sendMessage(MALocalizationUtil.literalText("Width: " + (nbt.getInt(WIDTH) - 2)));
 //                    nbt.putInt(WIDTH, nbt.getInt(WIDTH) - 2);
-                    context.getPlayer().sendSystemMessage(MALocalizationUtil.literalText("Block: " + MALocalizationUtil.translatableText(state.getBlock().getDescriptionId()).getString()));
+                    player.sendSystemMessage(MALocalizationUtil.literalText("Block: " + MALocalizationUtil.translatableText(state.getBlock().getDescriptionId()).getString()));
                     nbt.putInt(BLOCK_ID, Block.getId(state));
                 } else {
-                    context.getPlayer().sendSystemMessage(MALocalizationUtil.literalText("Width: " + (nbt.getInt(WIDTH) + 2)));
+                    player.sendSystemMessage(MALocalizationUtil.literalText("Width: " + (nbt.getInt(WIDTH) + 2)));
                     nbt.putInt(WIDTH, nbt.getInt(WIDTH) + 2);
                 }
             } else {
@@ -64,21 +73,35 @@ public class ItemDynamicBridgeCreator extends ItemNodeModifierBase {
                     BlockState state1 = nbt.contains(BLOCK_ID) ? Block.stateById(nbt.getInt(BLOCK_ID)) : null;
 
                     if (!railwayData.containsRail(posStart, posEnd)) {
-                        context.getPlayer().displayClientMessage(MALocalizationUtil.translatableText("gui.mtr.rail_not_found_action"), true);
+                        player.displayClientMessage(MALocalizationUtil.translatableText("gui.mtr.rail_not_found_action"), true);
                     } else if (state1 == null) {
-                        context.getPlayer().displayClientMessage(MALocalizationUtil.literalText("No block selected"), true);
+                        player.displayClientMessage(MALocalizationUtil.literalText("No block selected"), true);
                     } else {
                         nbt.remove(POS_START);
-                        railwayData.railwayDataRailActionsModule.markRailForBridge(context.getPlayer(), posStart, posEnd, (nbt.getInt(WIDTH) + 1) / 2, state1);
+                        railwayData.railwayDataRailActionsModule.markRailForBridge(player, posStart, posEnd, (nbt.getInt(WIDTH) + 1) / 2, state1);
                     }
                 } else {
-                    context.getPlayer().sendSystemMessage(MALocalizationUtil.literalText("First pos: " + context.getClickedPos().toShortString()));
+                    player.sendSystemMessage(MALocalizationUtil.literalText("First pos: " + context.getClickedPos().toShortString()));
                     nbt.putLong(POS_START, context.getClickedPos().asLong());
                 }
             }
         }
 
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+        if (!level.isClientSide())
+            return InteractionResultHolder.success(player.getItemInHand(interactionHand));
+
+        if (!(Minecraft.getInstance().hitResult instanceof BlockHitResult))
+            return InteractionResultHolder.pass(player.getItemInHand(interactionHand));
+
+        CompoundTag nbt = player.getItemInHand(interactionHand).getOrCreateTag();
+        Minecraft.getInstance().setScreen(new BridgeCreatorConfigurationScreen(nbt.getInt(WIDTH)));
+
+        return InteractionResultHolder.success(player.getItemInHand(interactionHand));
     }
 
     @Override

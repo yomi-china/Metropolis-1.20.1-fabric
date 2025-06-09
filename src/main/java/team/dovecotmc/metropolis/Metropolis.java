@@ -45,6 +45,8 @@ public class Metropolis implements ModInitializer {
         SittableRegistries.registerSittable(new SittableRegistry(MetroBlocks.BLOCK_BENCH, (state, player, hit) -> Optional.of(new Vec3(0.5, 0.1, 0.5))));
 //        MetroEnumUtil.addRailtype("rail_5", 5, MapColor.BLUE, false, true, true, RailType.RailSlopeStyle.CURVE);
 
+        // TODO: Ask Haruka: Japanese localization!!!
+
         UseBlockCallback.EVENT.register(
                 (player, world, hand, hitResult) -> !player.isShiftKeyDown() && EntitySittable.trySit(world, hitResult.getBlockPos(), world.getBlockState(hitResult.getBlockPos()), hitResult, player) ?
                         InteractionResult.SUCCESS :
