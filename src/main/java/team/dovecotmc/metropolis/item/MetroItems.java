@@ -91,6 +91,9 @@ public class MetroItems {
     public static final Item ITEM_CORDON_RED_WHITE = register("cordon_red_white", new ItemBlockWithTooltips(MetroBlocks.BLOCK_CORDON_RED_WHITE, new Item.Properties().tab(Metropolis.ITEM_GROUP)));
     // Bench
     public static final Item ITEM_BENCH = register("bench", new BlockItem(MetroBlocks.BLOCK_BENCH, new Item.Properties().tab(Metropolis.ITEM_GROUP)));
+    // Awning
+    public static final Item ITEM_AWNING_PILLAR = register("awning_pillar", new BlockItem(MetroBlocks.BLOCK_AWNING_PILLAR, new Item.Properties().tab(Metropolis.ITEM_GROUP)));
+    public static final Item ITEM_AWNING_CEILING = register("awning_ceiling", new BlockItem(MetroBlocks.BLOCK_AWNING_CEILING, new Item.Properties().tab(Metropolis.ITEM_GROUP)));
 
     // TODO: Blind path
 //    public static final Item ITEM_BLIND_PATH_STRIP = register("blind_path_strip", new BlockItem(MetroBlocks.BLOCK_BLIND_PATH_STRIP, new Item.Settings().group(Metropolis.ITEM_GROUP)));
