@@ -4,13 +4,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import team.dovecotmc.metropolis.util.MetroBlockUtil;
 
 import java.util.Objects;
 
@@ -28,7 +34,7 @@ public class BlockAwningCeiling extends BlockHorizontalAxis {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        return getStateForUpdate(ctx.getLevel(), ctx.getClickedPos(), Objects.requireNonNull(super.getStateForPlacement(ctx)));
+        return getStateForUpdate(ctx.getLevel(), ctx.getClickedPos(), this.defaultBlockState().setValue(AXIS, ctx.getHorizontalDirection().getClockWise().getAxis()));
     }
 
     public BlockState getStateForUpdate(LevelAccessor level, BlockPos pos, BlockState state) {
@@ -39,10 +45,6 @@ public class BlockAwningCeiling extends BlockHorizontalAxis {
         boolean left = leftState.getBlock() instanceof BlockAwningCeiling || (leftState.getBlock() instanceof BlockAwningPillar && leftState.getValue(BlockAwningPillar.TYPE).equals(BlockAwningPillar.Type.TOP));
         boolean right = rightState.getBlock() instanceof BlockAwningCeiling || (rightState.getBlock() instanceof BlockAwningPillar && rightState.getValue(BlockAwningPillar.TYPE).equals(BlockAwningPillar.Type.TOP));
 
-        System.out.println("--");
-        System.out.println(leftState);
-        System.out.println(rightState);
-
         if (left && right) {
             return state.setValue(TYPE, Type.MIDDLE);
         } else if (right) {
@@ -51,6 +53,11 @@ public class BlockAwningCeiling extends BlockHorizontalAxis {
             return state.setValue(TYPE, Type.LEFT);
         }
         return state.setValue(TYPE, Type.MIDDLE);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+        return MetroBlockUtil.getVoxelShapeByDirection(0, 10, 6, 16, 16, 10, Direction.fromAxisAndDirection(blockState.getValue(AXIS), Direction.AxisDirection.POSITIVE));
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

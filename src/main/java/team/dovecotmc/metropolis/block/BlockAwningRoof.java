@@ -1,5 +1,6 @@
 package team.dovecotmc.metropolis.block;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -17,10 +18,13 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import team.dovecotmc.metropolis.util.MetroBlockUtil;
 
-public class BlockAwningPillar extends BlockHorizontalAxis implements IBlockAwningPillar {
+import java.util.Objects;
+import java.util.function.Function;
+
+public class BlockAwningRoof extends BlockHorizontalAxis {
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
-    public BlockAwningPillar(Properties settings) {
+    public BlockAwningRoof(Properties settings) {
         super(settings);
     }
 
@@ -31,38 +35,25 @@ public class BlockAwningPillar extends BlockHorizontalAxis implements IBlockAwni
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        return getStateForUpdate(ctx.getLevel(), ctx.getClickedPos(), super.getStateForPlacement(ctx));
+        return getStateForUpdate(ctx.getLevel(), ctx.getClickedPos(), Objects.requireNonNull(super.getStateForPlacement(ctx)));
     }
 
     public BlockState getStateForUpdate(LevelAccessor level, BlockPos pos, BlockState state) {
-        BlockState above = level.getBlockState(pos.above());
-        BlockState below = level.getBlockState(pos.below());
-        if (above.getBlock() instanceof BlockAwningPillar && below.getBlock() instanceof BlockAwningPillar) {
-            return state.setValue(TYPE, Type.MIDDLE);
-        } else if (above.getBlock() instanceof BlockAwningPillar) {
-            if (above.getValue(AXIS).equals(state.getValue(AXIS))) {
-                return state.setValue(TYPE, Type.BOTTOM);
-            } else {
-                return state.setValue(TYPE, Type.MIDDLE);
-            }
-        } else if (below.getBlock() instanceof BlockAwningPillar) {
-            if (below.getValue(AXIS).equals(state.getValue(AXIS))) {
-                return state.setValue(TYPE, Type.TOP);
-            } else {
-                return state.setValue(TYPE, Type.MIDDLE);
-            }
-        } else {
-            return state.setValue(TYPE, Type.MIDDLE);
-        }
-    }
+        Direction.Axis axis = state.getValue(AXIS);
+        Direction facing = Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE);
+        BlockState leftState = level.getBlockState(pos.relative(facing.getClockWise()));
+        BlockState rightState = level.getBlockState(pos.relative(facing.getCounterClockWise()));
+        boolean left = leftState.getBlock() instanceof BlockAwningRoof || (leftState.getBlock() instanceof BlockAwningPillar && leftState.getValue(BlockAwningPillar.TYPE).equals(BlockAwningPillar.Type.TOP));
+        boolean right = rightState.getBlock() instanceof BlockAwningRoof || (rightState.getBlock() instanceof BlockAwningPillar && rightState.getValue(BlockAwningPillar.TYPE).equals(BlockAwningPillar.Type.TOP));
 
-    @Override
-    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
-        if (blockState.getValue(TYPE).equals(Type.TOP)) {
-            return Shapes.join(Block.box(4, 0, 4, 12, 16, 12), Block.box(0, 8, 0, 16, 16, 16), BooleanOp.OR);
-        } else {
-            return Block.box(4, 0, 4, 12, 16, 12);
+        if (left && right) {
+            return state.setValue(TYPE, Type.MIDDLE);
+        } else if (right) {
+            return state.setValue(TYPE, Type.RIGHT);
+        } else if (left) {
+            return state.setValue(TYPE, Type.LEFT);
         }
+        return state.setValue(TYPE, Type.MIDDLE);
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -70,10 +61,16 @@ public class BlockAwningPillar extends BlockHorizontalAxis implements IBlockAwni
         builder.add(TYPE);
     }
 
+    @Override
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+        Direction facing = Direction.fromAxisAndDirection(blockState.getValue(AXIS), Direction.AxisDirection.POSITIVE);
+        return Shapes.join(MetroBlockUtil.getVoxelShapeByDirection(0, 2, 0, 16, 7, 16, facing), MetroBlockUtil.getVoxelShapeByDirection(6, 0, 0, 10, 7, 16, facing), BooleanOp.OR);
+    }
+
     public enum Type implements StringRepresentable {
-        BOTTOM("bottom"),
-        TOP("top"),
-        MIDDLE("middle");
+        LEFT("left"),
+        MIDDLE("middle"),
+        RIGHT("right");
 
         private final String name;
 
