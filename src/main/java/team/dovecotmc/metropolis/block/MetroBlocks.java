@@ -109,7 +109,8 @@ public class MetroBlocks {
 
     // Awning
     public static final Block BLOCK_AWNING_PILLAR = register("awning_pillar", new BlockAwningPillar(BlockBehaviour.Properties.of(Material.STONE, DyeColor.LIGHT_GRAY).strength(6.0f)));
-    public static final Block BLOCK_AWNING_CEILING = register("awning_ceiling", new BlockAwningCeiling(BlockBehaviour.Properties.of(Material.STONE, DyeColor.LIGHT_GRAY).strength(6.0f)));
+    public static final Block BLOCK_AWNING_PILLAR_EMERGENCY = register("awning_pillar_emergency", new BlockAwningPillarEmergency(BlockBehaviour.Properties.of(Material.STONE, DyeColor.LIGHT_GRAY).strength(6.0f)));
+    public static final Block BLOCK_AWNING_BEAM = register("awning_beam", new BlockAwningBeam(BlockBehaviour.Properties.of(Material.STONE, DyeColor.LIGHT_GRAY).strength(6.0f)));
     public static final Block BLOCK_AWNING_ROOF = register("awning_roof", new BlockAwningRoof(BlockBehaviour.Properties.of(Material.STONE, DyeColor.GRAY).strength(6.0f)));
 
     // TODO: Blind path

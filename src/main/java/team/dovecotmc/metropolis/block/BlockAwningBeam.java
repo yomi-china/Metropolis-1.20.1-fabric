@@ -7,23 +7,18 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import team.dovecotmc.metropolis.util.MetroBlockUtil;
 
-import java.util.Objects;
-
-public class BlockAwningCeiling extends BlockHorizontalAxis {
+public class BlockAwningBeam extends BlockHorizontalAxis {
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
-    public BlockAwningCeiling(Properties settings) {
+    public BlockAwningBeam(Properties settings) {
         super(settings);
     }
 
@@ -42,8 +37,8 @@ public class BlockAwningCeiling extends BlockHorizontalAxis {
         Direction facing = Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE);
         BlockState leftState = level.getBlockState(pos.relative(facing.getClockWise()));
         BlockState rightState = level.getBlockState(pos.relative(facing.getCounterClockWise()));
-        boolean left = leftState.getBlock() instanceof BlockAwningCeiling || (leftState.getBlock() instanceof BlockAwningPillar && leftState.getValue(BlockAwningPillar.TYPE).equals(BlockAwningPillar.Type.TOP));
-        boolean right = rightState.getBlock() instanceof BlockAwningCeiling || (rightState.getBlock() instanceof BlockAwningPillar && rightState.getValue(BlockAwningPillar.TYPE).equals(BlockAwningPillar.Type.TOP));
+        boolean left = leftState.getBlock() instanceof BlockAwningBeam || (leftState.getBlock() instanceof BlockAwningPillar && leftState.getValue(BlockAwningPillar.TYPE).equals(BlockAwningPillar.Type.TOP));
+        boolean right = rightState.getBlock() instanceof BlockAwningBeam || (rightState.getBlock() instanceof BlockAwningPillar && rightState.getValue(BlockAwningPillar.TYPE).equals(BlockAwningPillar.Type.TOP));
 
         if (left && right) {
             return state.setValue(TYPE, Type.MIDDLE);

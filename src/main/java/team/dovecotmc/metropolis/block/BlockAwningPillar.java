@@ -15,7 +15,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
-import team.dovecotmc.metropolis.util.MetroBlockUtil;
+
+import java.util.Objects;
 
 public class BlockAwningPillar extends BlockHorizontalAxis implements IBlockAwningPillar {
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
@@ -31,23 +32,39 @@ public class BlockAwningPillar extends BlockHorizontalAxis implements IBlockAwni
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        return getStateForUpdate(ctx.getLevel(), ctx.getClickedPos(), super.getStateForPlacement(ctx));
+        BlockState superState = getStateForUpdate(ctx.getLevel(), ctx.getClickedPos(), super.getStateForPlacement(ctx));
+        if (ctx.getLevel().getBlockState(ctx.getClickedPos().above()).getBlock() instanceof IBlockAwningPillar) {
+            return superState.setValue(AXIS, ctx.getLevel().getBlockState(ctx.getClickedPos().above()).getValue(AXIS));
+        } else if (ctx.getLevel().getBlockState(ctx.getClickedPos().below()).getBlock() instanceof IBlockAwningPillar) {
+            return superState.setValue(AXIS, ctx.getLevel().getBlockState(ctx.getClickedPos().below()).getValue(AXIS));
+        } else {
+            return superState;
+        }
     }
 
     public BlockState getStateForUpdate(LevelAccessor level, BlockPos pos, BlockState state) {
         BlockState above = level.getBlockState(pos.above());
         BlockState below = level.getBlockState(pos.below());
-        if (above.getBlock() instanceof BlockAwningPillar && below.getBlock() instanceof BlockAwningPillar) {
+        if (above.getBlock() instanceof IBlockAwningPillar && below.getBlock() instanceof IBlockAwningPillar) {
             return state.setValue(TYPE, Type.MIDDLE);
-        } else if (above.getBlock() instanceof BlockAwningPillar) {
+        } else if (above.getBlock() instanceof IBlockAwningPillar) {
             if (above.getValue(AXIS).equals(state.getValue(AXIS))) {
                 return state.setValue(TYPE, Type.BOTTOM);
             } else {
                 return state.setValue(TYPE, Type.MIDDLE);
             }
-        } else if (below.getBlock() instanceof BlockAwningPillar) {
+        } else if (below.getBlock() instanceof IBlockAwningPillar) {
             if (below.getValue(AXIS).equals(state.getValue(AXIS))) {
-                return state.setValue(TYPE, Type.TOP);
+                if (
+                        level.getBlockState(pos.north()).getBlock() instanceof BlockAwningBeam ||
+                                level.getBlockState(pos.south()).getBlock() instanceof BlockAwningBeam ||
+                                level.getBlockState(pos.west()).getBlock() instanceof BlockAwningBeam ||
+                                level.getBlockState(pos.east()).getBlock() instanceof BlockAwningBeam
+                ) {
+                    return state.setValue(TYPE, Type.TOP);
+                } else {
+                    return state.setValue(TYPE, Type.MIDDLE);
+                }
             } else {
                 return state.setValue(TYPE, Type.MIDDLE);
             }
@@ -59,7 +76,14 @@ public class BlockAwningPillar extends BlockHorizontalAxis implements IBlockAwni
     @Override
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         if (blockState.getValue(TYPE).equals(Type.TOP)) {
-            return Shapes.join(Block.box(4, 0, 4, 12, 16, 12), Block.box(0, 8, 0, 16, 16, 16), BooleanOp.OR);
+            return Shapes.join(
+                    Block.box(4, 0, 4, 12, 16, 12),
+                    Shapes.join(
+                            Block.box(0, 8, 4, 16, 16, 12),
+                            Block.box(4, 8, 0, 12, 16, 16),
+                            BooleanOp.OR
+                    ),
+                    BooleanOp.OR);
         } else {
             return Block.box(4, 0, 4, 12, 16, 12);
         }

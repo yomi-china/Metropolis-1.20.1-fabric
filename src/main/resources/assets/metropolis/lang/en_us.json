@@ -178,5 +178,10 @@
     "block.metropolis.cordon_red_white": "Cordon block",
     "tooltip.metropolis.cordon_red_white": "§7Red-white",
 
-    "block.metropolis.bench": "Bench"
+    "block.metropolis.bench": "Bench",
+
+    "block.metropolis.awning_pillar": "Awning Pillar",
+    "block.metropolis.awning_pillar_emergency": "Awning Pillar (Emergency Button)",
+    "block.metropolis.awning_beam": "Awning Beam",
+    "block.metropolis.awning_roof": "Awning Roof"
 }

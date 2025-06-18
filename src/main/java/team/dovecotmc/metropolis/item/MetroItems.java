@@ -93,7 +93,8 @@ public class MetroItems {
     public static final Item ITEM_BENCH = register("bench", new BlockItem(MetroBlocks.BLOCK_BENCH, new Item.Properties().tab(Metropolis.ITEM_GROUP)));
     // Awning
     public static final Item ITEM_AWNING_PILLAR = register("awning_pillar", new BlockItem(MetroBlocks.BLOCK_AWNING_PILLAR, new Item.Properties().tab(Metropolis.ITEM_GROUP)));
-    public static final Item ITEM_AWNING_CEILING = register("awning_ceiling", new BlockItem(MetroBlocks.BLOCK_AWNING_CEILING, new Item.Properties().tab(Metropolis.ITEM_GROUP)));
+    public static final Item ITEM_AWNING_PILLAR_EMERGENCY = register("awning_pillar_emergency", new BlockItem(MetroBlocks.BLOCK_AWNING_PILLAR_EMERGENCY, new Item.Properties().tab(Metropolis.ITEM_GROUP)));
+    public static final Item ITEM_AWNING_BEAM = register("awning_beam", new BlockItem(MetroBlocks.BLOCK_AWNING_BEAM, new Item.Properties().tab(Metropolis.ITEM_GROUP)));
     public static final Item ITEM_AWNING_ROOF = register("awning_roof", new BlockItem(MetroBlocks.BLOCK_AWNING_ROOF, new Item.Properties().tab(Metropolis.ITEM_GROUP)));
 
     // TODO: Blind path
