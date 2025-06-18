@@ -1,6 +1,7 @@
 package team.dovecotmc.metropolis.item;
 
 import org.jetbrains.annotations.Nullable;
+import team.dovecotmc.metropolis.abstractinterface.util.MACommonUtil;
 import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
 
 import java.util.List;
@@ -33,6 +34,6 @@ public class ItemBlockWithTooltipShowStationHUD extends BlockItem implements IIt
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag context) {
         super.appendHoverText(stack, world, tooltip, context);
-        tooltip.add(MALocalizationUtil.translatableText("tooltip." + Registry.ITEM.getKey(this).toLanguageKey()).setStyle(this.style));
+        tooltip.add(MACommonUtil.getTooltip(this, this.style));
     }
 }
