@@ -3,10 +3,12 @@
     "id": "metropolis",
     "version": "${version}",
     "name": "Metropolis",
-    "description": "Chemin de Fer Métropolitain\nTraditional Chinese localization by HQIDK",
+    "description": "Chemin de Fer Métropolitain",
     "authors": [
         "Arrokoth233",
-        "Radekemia"
+        "Radekemia",
+        "HQIDK",
+        "ShirahaneExpress"
     ],
     "contact": {
         "repo": "https://github.com/DoveCotMC/Metropolis"
