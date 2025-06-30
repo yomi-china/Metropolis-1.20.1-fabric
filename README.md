@@ -1,9 +1,4 @@
-# Chemin de Fer Métropolitain
-
-````
-This mod is in alpha and it's very unstable.
-Do think twice before installing it on servers or other important saves.
-````
+# Métropolis
 
 ---
 
