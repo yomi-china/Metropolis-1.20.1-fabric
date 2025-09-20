@@ -9,13 +9,14 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
 import team.dovecotmc.metropolis.client.MetropolisClient;
@@ -29,7 +30,7 @@ import team.dovecotmc.metropolis.util.MtrStationUtil;
  */
 @SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
-public class MetroBlockPlaceHud extends GuiComponent {
+public class MetroBlockPlaceHud {
     public boolean shouldRender = false;
     public PoseStack matricesWorld;
     public VertexConsumer vertexConsumerWorld;
@@ -40,7 +41,7 @@ public class MetroBlockPlaceHud extends GuiComponent {
         vertexConsumerWorld = null;
     }
 
-    public void render(PoseStack matrices, float tickDelta) {
+    public void render(GuiGraphics guiGraphics, float tickDelta) {
         if (!MetropolisClient.config.enableStationInfoOverlay) {
             return;
         }
@@ -62,13 +63,14 @@ public class MetroBlockPlaceHud extends GuiComponent {
             return;
         }
 
-        if (hitResult != null && textRenderer != null && hitResult.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK) {
-            BlockPos pos = new BlockPos(hitResult.getLocation());
+        if (hitResult != null && textRenderer != null && hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockPos pos = ((BlockHitResult) hitResult).getBlockPos();
             int width = client.getWindow().getGuiScaledWidth();
             int height = client.getWindow().getGuiScaledHeight();
             int centerX = width / 2;
             int centerY = height / 2;
 
+            PoseStack matrices = guiGraphics.pose();
             matrices.pushPose();
 
             RenderSystem.assertOnRenderThread();
@@ -89,12 +91,13 @@ public class MetroBlockPlaceHud extends GuiComponent {
                 int y0 = centerY - 8 - textRenderer.lineHeight;
                 Component pointedStation = MALocalizationUtil.translatableText("hud.title.pointed_station");
                 int pointedStationWidth = textRenderer.width(pointedStation);
-                textRenderer.drawShadow(
-                        matrices,
+                guiGraphics.drawString(
+                        textRenderer,
                         pointedStation,
-                        centerX - pointedStationWidth / 2f,
+                        (int) (centerX - pointedStationWidth / 2f),
                         y0,
-                        0xFFFFFF
+                        0xFFFFFF,
+                        true
                 );
 
                 y0 = centerY + 8;
@@ -102,24 +105,26 @@ public class MetroBlockPlaceHud extends GuiComponent {
                 String[] stationNames = station.name.split("\\|");
                 Component stationFirstName = MALocalizationUtil.literalText(stationNames[0]);
                 int stationFirstNameWidth = textRenderer.width(stationFirstName);
-                textRenderer.drawShadow(
-                        matrices,
+                guiGraphics.drawString(
+                        textRenderer,
                         stationFirstName,
-                        centerX - stationFirstNameWidth / 2f,
+                        (int) (centerX - stationFirstNameWidth / 2f),
                         y0,
-                        0xFFFFFF
+                        0xFFFFFF,
+                        true
                 );
 
                 if (stationNames.length > 1) {
                     Component stationSecondName = MALocalizationUtil.literalText(stationNames[1]);
                     int stationSecondNameWidth = textRenderer.width(stationSecondName);
                     y0 += textRenderer.lineHeight + 2;
-                    textRenderer.drawShadow(
-                            matrices,
+                    guiGraphics.drawString(
+                            textRenderer,
                             stationSecondName,
-                            centerX - stationSecondNameWidth / 2f,
+                            (int) (centerX - stationSecondNameWidth / 2f),
                             y0,
-                            0x545454
+                            0x545454,
+                            true
                     );
                 }
             }

@@ -1,10 +1,11 @@
 package team.dovecotmc.metropolis.client;
 
-import mtr.client.CustomResources;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.*;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
@@ -12,16 +13,15 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
-import team.dovecotmc.metropolis.block.entity.MetroBlockEntities;
-import team.dovecotmc.metropolis.client.block.entity.*;
 import team.dovecotmc.metropolis.Metropolis;
 import team.dovecotmc.metropolis.block.MetroBlocks;
+import team.dovecotmc.metropolis.block.entity.MetroBlockEntities;
+import team.dovecotmc.metropolis.client.block.entity.*;
 import team.dovecotmc.metropolis.client.block.model.provider.MetroModelProvicer;
+import team.dovecotmc.metropolis.client.config.MetroClientConfig;
 import team.dovecotmc.metropolis.client.entity.EntitySittableRenderer;
-import team.dovecotmc.metropolis.client.gui.AlphaWarningHud;
 import team.dovecotmc.metropolis.client.gui.MetroBlockPlaceHud;
 import team.dovecotmc.metropolis.client.network.MetroClientNetwork;
-import team.dovecotmc.metropolis.client.config.MetroClientConfig;
 import team.dovecotmc.metropolis.entity.MetroEntities;
 
 /**

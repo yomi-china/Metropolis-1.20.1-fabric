@@ -1,7 +1,7 @@
 package team.dovecotmc.metropolis.util;
 
 import mtr.data.RailType;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 
 /**
  * @author Arrokoth
@@ -10,7 +10,7 @@ import net.minecraft.world.level.material.MaterialColor;
  */
 @SuppressWarnings("unused")
 public class MetroEnumUtil {
-    public static RailType addRailtype(String name, int speedLimit, MaterialColor materialColor, boolean hasSavedRail, boolean canAccelerate, boolean hasSignal, RailType.RailSlopeStyle railSlopeStyle) {
+    public static RailType addRailtype(String name, int speedLimit, MapColor materialColor, boolean hasSavedRail, boolean canAccelerate, boolean hasSignal, RailType.RailSlopeStyle railSlopeStyle) {
         throw new RuntimeException("Don't invoke this method!");
     }
 }

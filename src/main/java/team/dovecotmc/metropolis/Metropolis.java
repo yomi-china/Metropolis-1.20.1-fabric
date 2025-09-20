@@ -1,8 +1,10 @@
 package team.dovecotmc.metropolis;
-
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.CreativeModeTab;
@@ -30,9 +32,60 @@ import java.util.Optional;
 public class Metropolis implements ModInitializer {
     public static final String MOD_ID = "metropolis";
     public static final Logger LOGGER = LogManager.getLogger("Metropolis");
-    public static final CreativeModeTab ITEM_GROUP = FabricItemGroupBuilder.create(new ResourceLocation(MOD_ID, "all"))
-            .icon(() -> new ItemStack(MetroItems.ITEM_ITV_MONITOR))
-            .build();
+    public static final CreativeModeTab ITEM_GROUP = Registry.register(
+            BuiltInRegistries.CREATIVE_MODE_TAB,
+            new ResourceLocation(MOD_ID, "all"),
+            FabricItemGroup.builder()
+                    .icon(() -> new ItemStack(MetroItems.ITEM_ITV_MONITOR))
+                    .title(Component.translatable("itemGroup.metropolis.all"))
+                    .displayItems((parameters, output) -> {
+                        output.accept(MetroItems.ITEM_CABLE);
+                        output.accept(MetroItems.ITEM_TICKET_VENDOR_TOP);
+                        output.accept(MetroItems.ITEM_TICKET_VENDOR_PANEL);
+                        output.accept(MetroItems.ITEM_TICKET_VENDOR_EM10);
+                        output.accept(MetroItems.ITEM_TICKET_VENDOR_EV23);
+                        output.accept(MetroItems.ITEM_FARE_ADJ_EV23);
+                        output.accept(MetroItems.ITEM_CEILING_A);
+                        output.accept(MetroItems.ITEM_FLUORESCENT_LAMP);
+                        output.accept(MetroItems.ITEM_BUMPER);
+                        output.accept(MetroItems.ITEM_CAMERA);
+                        output.accept(MetroItems.ITEM_TURNSTILE_ENTER);
+                        output.accept(MetroItems.ITEM_TURNSTILE_EXIT);
+                        output.accept(MetroItems.ITEM_TURNSTILE_IC_ONLY_ENTER);
+                        output.accept(MetroItems.ITEM_TURNSTILE_IC_ONLY_EXIT);
+                        output.accept(MetroItems.ITEM_SIGN_NO_PHOTO);
+                        output.accept(MetroItems.ITEM_PSD_JR_DOOR_1);
+                        output.accept(MetroItems.ITEM_PSD_JR_DOOR_2);
+                        output.accept(MetroItems.ITEM_PSD_JR_FENCE_1);
+                        output.accept(MetroItems.ITEM_PSD_JR_FENCE_2);
+                        output.accept(MetroItems.ITEM_SINGLE_TRIP_TICKET);
+                        output.accept(MetroItems.ITEM_CARD);
+                        output.accept(MetroItems.ITEM_CREATIVE_CARD);
+                        output.accept(MetroItems.ITEM_EXIT_TICKET);
+                        output.accept(MetroItems.ITEM_ITV_MONITOR);
+                        output.accept(MetroItems.ITEM_SECURITY_DOOR);
+                        output.accept(MetroItems.ITEM_SECURITY_INSPECTION_MACHINE);
+                        output.accept(MetroItems.ITEM_CONCRETE);
+                        output.accept(MetroItems.ITEM_PLATFORM_A);
+                        output.accept(MetroItems.ITEM_TILES_WHITE);
+                        output.accept(MetroItems.ITEM_TILES_LARGE_WHITE);
+                        output.accept(MetroItems.ITEM_TILES_HORIZONTAL_WHITE);
+                        output.accept(MetroItems.ITEM_TILES_SMALL_WHITE);
+                        output.accept(MetroItems.ITEM_TILES_GRAY);
+                        output.accept(MetroItems.ITEM_TILES_HORIZONTAL_GRAY);
+                        output.accept(MetroItems.ITEM_TILES_SMALL_GRAY);
+                        output.accept(MetroItems.ITEM_CORDON_YELLOW_BLACK);
+                        output.accept(MetroItems.ITEM_CORDON_YELLOW_WHITE);
+                        output.accept(MetroItems.ITEM_CORDON_RED_BLACK);
+                        output.accept(MetroItems.ITEM_CORDON_RED_WHITE);
+                        output.accept(MetroItems.ITEM_BENCH);
+                        output.accept(MetroItems.ITEM_AWNING_PILLAR);
+                        output.accept(MetroItems.ITEM_AWNING_PILLAR_EMERGENCY);
+                        output.accept(MetroItems.ITEM_AWNING_BEAM);
+                        output.accept(MetroItems.ITEM_AWNING_ROOF);
+                    })
+                    .build()
+    );
     public static final MetroConfig config = MetroConfig.load();
 
     @Override

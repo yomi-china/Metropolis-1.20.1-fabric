@@ -2,7 +2,7 @@ package team.dovecotmc.metropolis.mixins;
 
 import mtr.block.BlockPSDAPGDoorBase;
 import mtr.block.IBlock;
-import mtr.data.*;
+import mtr.data.TrainServer;
 import mtr.mappings.Utilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;

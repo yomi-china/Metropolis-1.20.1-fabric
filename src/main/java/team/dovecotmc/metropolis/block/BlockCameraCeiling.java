@@ -9,23 +9,17 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import team.dovecotmc.metropolis.block.entity.BlockEntityBumper;
 import team.dovecotmc.metropolis.block.entity.BlockEntityCamera;
 
 /**
@@ -41,7 +35,11 @@ public class BlockCameraCeiling extends BaseEntityBlock {
     }
 
     public BlockCameraCeiling() {
-        super(FabricBlockSettings.of(Material.METAL, MaterialColor.COLOR_YELLOW).strength(4.0f).noOcclusion());
+        super(FabricBlockSettings.create()
+                .mapColor(MapColor.COLOR_YELLOW)
+                .strength(4.0f)
+                .nonOpaque()
+        );
         this.registerDefaultState(this.stateDefinition.any().setValue(ROTATION, 0));
     }
 

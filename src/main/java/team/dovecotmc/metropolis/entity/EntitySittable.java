@@ -7,21 +7,15 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -51,10 +45,10 @@ public class EntitySittable extends Entity {
     }
 
     @Override
-    public void positionRider(Entity passenger) {
+    protected void positionRider(Entity passenger, Entity.MoveFunction moveFunction) {
         if (this.hasPassenger(passenger)) {
             double d = this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset();
-            passenger.setPosRaw(this.getX(), d + passenger.getEyeHeight(Pose.CROUCHING), this.getZ());
+            moveFunction.accept(passenger, this.getX(), d + passenger.getEyeHeight(Pose.CROUCHING), this.getZ());
         }
     }
 
@@ -78,13 +72,13 @@ public class EntitySittable extends Entity {
 
                     for (int[] js : is) {
                         mutable.set(blockPos.getX() + js[0], blockPos.getY() + i, blockPos.getZ() + js[1]);
-                        double d = this.level.getBlockFloorHeight(DismountHelper.nonClimbableShape(this.level, mutable), () -> {
-                            return DismountHelper.nonClimbableShape(this.level, mutable.below());
+                        double d = this.level().getBlockFloorHeight(DismountHelper.nonClimbableShape(this.level(), mutable), () -> {
+                            return DismountHelper.nonClimbableShape(this.level(), mutable.below());
                         });
                         if (DismountHelper.isBlockFloorValid(d)) {
                             AABB box = new AABB((double) (-f), 0.0, (double) (-f), (double) f, (double) entityDimensions.height, (double) f);
                             Vec3 vec3d = Vec3.upFromBottomCenterOf(mutable, d);
-                            if (DismountHelper.canDismountTo(this.level, passenger, box.move(vec3d))) {
+                            if (DismountHelper.canDismountTo(this.level(), passenger, box.move(vec3d))) {
                                 passenger.setPose(entityPose);
                                 return vec3d;
                             }
@@ -100,7 +94,7 @@ public class EntitySittable extends Entity {
                 double g = (double) passenger.getDimensions(entityPose2).height;
                 int j = Mth.ceil(e - (double) mutable.getY() + g);
                 double h = DismountHelper.findCeilingFrom(mutable, j, (pos) -> {
-                    return this.level.getBlockState(pos).getCollisionShape(this.level, pos);
+                    return this.level().getBlockState(pos).getCollisionShape(this.level(), pos);
                 });
                 if (e + g <= h) {
                     passenger.setPose(entityPose2);
@@ -132,7 +126,7 @@ public class EntitySittable extends Entity {
             double g = this.getBoundingBox().maxY + 0.75;
 
             while (true) {
-                double h = this.level.getBlockFloorHeight(mutable);
+                double h = this.level().getBlockFloorHeight(mutable);
                 if ((double) mutable.getY() + h > g) {
                     break;
                 }
@@ -140,7 +134,7 @@ public class EntitySittable extends Entity {
                 if (DismountHelper.isBlockFloorValid(h) && h != 0) {
                     AABB box = passenger.getLocalBoundsForPose(entityPose);
                     Vec3 vec3d = new Vec3(d, (double) mutable.getY() + h, f);
-                    if (DismountHelper.canDismountTo(this.level, passenger, box.move(vec3d))) {
+                    if (DismountHelper.canDismountTo(this.level(), passenger, box.move(vec3d))) {
                         passenger.setPose(entityPose);
                         return vec3d;
                     }
@@ -170,7 +164,7 @@ public class EntitySittable extends Entity {
 
     @Override
     public void tick() {
-        if (level.isClientSide || tickCount < 5) return;
+        if (this.level().isClientSide || tickCount < 5) return;
         final List<Entity> passengers = getPassengers();
         if (passengers.isEmpty()) remove(RemovalReason.DISCARDED);
         tick++;
@@ -178,7 +172,7 @@ public class EntitySittable extends Entity {
         if (tick != 0) return;
         for (final var p : passengers) {
             final Component msg = isPoseValid(p.getPose()) ?
-                    isSeatValid(level, blockPosition()) ? null : MALocalizationUtil.translatableText("sittable.metropolis.invaild") : MALocalizationUtil.translatableText("sittable.metropolis.wrong_pose");
+                    isSeatValid(this.level(), blockPosition()) ? null : MALocalizationUtil.translatableText("sittable.metropolis.invaild") : MALocalizationUtil.translatableText("sittable.metropolis.wrong_pose");
             if (msg == null) continue;
             p.stopRiding();
             p.setPosRaw(p.getX(), blockPosition().getY(), p.getZ());
@@ -221,17 +215,18 @@ public class EntitySittable extends Entity {
 //    }
 
     private static final List<Pose> availablePoses = ImmutableList.of(Pose.STANDING, Pose.CROUCHING);
+
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
 
     public static boolean isSeatValid(Level world, BlockPos pos) {
-        return !world.getBlockState(pos).getMaterial().equals(Material.AIR);
+        return !world.getBlockState(pos).isAir();
     }
 
     public static boolean isSeatValid(Level world, Vec3 vec) {
-        return isSeatValid(world, new BlockPos(Math.floor(vec.x), Math.floor(vec.y - .03), Math.floor(vec.z)));
+        return isSeatValid(world, BlockPos.containing(vec.x, vec.y - .03, vec.z));
     }
 
     public static boolean isPoseValid(Pose pose) {

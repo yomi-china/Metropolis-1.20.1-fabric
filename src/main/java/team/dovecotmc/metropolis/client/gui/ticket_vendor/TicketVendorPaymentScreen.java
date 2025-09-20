@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -60,17 +61,16 @@ public class TicketVendorPaymentScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
-        this.fillGradient(matrices, 0, 0, this.width, this.height, -1072689136, -804253680);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        guiGraphics.fillGradient(0, 0, this.width, this.height, -1072689136, -804253680);
 
         RenderSystem.assertOnRenderThread();
         RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        RenderSystem.setShaderTexture(0, BG_TEXTURE_ID);
-        blit(
-                matrices,
+        guiGraphics.blit(
+                BG_TEXTURE_ID,
                 this.width / 2 - BG_TEXTURE_WIDTH / 2,
                 this.height / 2 - BG_TEXTURE_HEIGHT / 2,
                 0,
@@ -82,25 +82,27 @@ public class TicketVendorPaymentScreen extends Screen {
         // Render text
         // Title
         MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
+        PoseStack poseStack = guiGraphics.pose();
         this.font.drawInBatch8xOutline(
                 MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_payment.title").getVisualOrderText(),
                 intoTexturePosX(36),
                 intoTexturePosY(12),
                 0xFFFFFF,
                 0x16161B,
-                matrices.last().pose(),
+                poseStack.last().pose(),
                 immediate,
                 15728880
         );
         immediate.endBatch();
 
         // Subtitle
-        this.font.draw(
-                matrices,
+        guiGraphics.drawString(
+                this.font,
                 MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_payment.subtitle"),
                 intoTexturePosX(34),
                 intoTexturePosY(35),
-                0x3F3F3F
+                0x3F3F3F,
+                false
         );
 
         // Description ticket
@@ -111,31 +113,33 @@ public class TicketVendorPaymentScreen extends Screen {
         int y1 = 138 + 4;
         int i0 = 0;
 
-        matrices.pushPose();
-        matrices.scale(scaleFactor, scaleFactor, scaleFactor);
+        poseStack.pushPose();
+        poseStack.scale(scaleFactor, scaleFactor, scaleFactor);
         for (Component text : paymentData.descriptions) {
-            this.font.drawShadow(
-                    matrices,
+            guiGraphics.drawString(
+                    this.font,
                     text,
-                    intoTexturePosX(x0) / scaleFactor,
-                    intoTexturePosY(y0 + (font.lineHeight + 2) * i0) / scaleFactor,
-                    0xFFFFFF
+                    (int) (intoTexturePosX(x0) / scaleFactor),
+                    (int) (intoTexturePosY(y0 + (font.lineHeight + 2) * i0) / scaleFactor),
+                    0xFFFFFF,
+                    true
             );
             i0++;
         }
-        matrices.popPose();
+        poseStack.popPose();
 
         // Description price
         Component priceText = MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_payment.price", paymentData.value);
 //        scaleFactor = 1f;
-        matrices.pushPose();
-        matrices.scale(scaleFactor, scaleFactor, scaleFactor);
-        this.font.drawShadow(
-                matrices,
+        poseStack.pushPose();
+        poseStack.scale(scaleFactor, scaleFactor, scaleFactor);
+        guiGraphics.drawString(
+                this.font,
                 priceText,
-                intoTexturePosX(x0) / scaleFactor,
-                intoTexturePosY(y1 + 2) / scaleFactor,
-                0xFFFFFF
+                (int) (intoTexturePosX(x0) / scaleFactor),
+                (int) (intoTexturePosY(y1 + 2) / scaleFactor),
+                0xFFFFFF,
+                true
         );
 
         int balance = 0;
@@ -146,37 +150,40 @@ public class TicketVendorPaymentScreen extends Screen {
         boolean ableToPay = balance >= paymentData.value;
 
         Component balanceText = MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_payment.balance", balance);
-        this.font.drawShadow(
-                matrices,
+        guiGraphics.drawString(
+                this.font,
                 balanceText,
-                intoTexturePosX(x0) / scaleFactor,
-                intoTexturePosY(y1 + 18) / scaleFactor,
-                ableToPay ? 0xFFFFFF : 0xFF3F3F
+                (int) (intoTexturePosX(x0) / scaleFactor),
+                (int) (intoTexturePosY(y1 + 18) / scaleFactor),
+                ableToPay ? 0xFFFFFF : 0xFF3F3F,
+                true
         );
 
         // Item unit
-        this.font.drawShadow(
-                matrices,
+        guiGraphics.drawString(
+                this.font,
                 MALocalizationUtil.literalText("×"),
-                intoTexturePosX(x0 + Math.max(font.width(balanceText), font.width(priceText)) + 4) / scaleFactor,
-                intoTexturePosY(y1 + 2) / scaleFactor,
-                0xFFFFFF
+                (int) (intoTexturePosX(x0 + Math.max(font.width(balanceText), font.width(priceText)) + 4) / scaleFactor),
+                (int) (intoTexturePosY(y1 + 2) / scaleFactor),
+                0xFFFFFF,
+                true
         );
-        this.font.drawShadow(
-                matrices,
+        guiGraphics.drawString(
+                this.font,
                 MALocalizationUtil.literalText("×"),
-                intoTexturePosX(x0 + Math.max(font.width(balanceText), font.width(priceText)) + 4) / scaleFactor,
-                intoTexturePosY(y1 + 18) / scaleFactor,
-                ableToPay ? 0xFFFFFF : 0xFF3F3F
+                (int) (intoTexturePosX(x0 + Math.max(font.width(balanceText), font.width(priceText)) + 4) / scaleFactor),
+                (int) (intoTexturePosY(y1 + 18) / scaleFactor),
+                ableToPay ? 0xFFFFFF : 0xFF3F3F,
+                true
         );
-        matrices.popPose();
+        poseStack.popPose();
 
-        this.itemRenderer.renderAndDecorateFakeItem(
+        guiGraphics.renderFakeItem(
                 new ItemStack(MetroClientNetwork.currencyItem),
                 intoTexturePosX(x0 + Math.max(font.width(balanceText), font.width(priceText)) + 4 + font.width(MALocalizationUtil.literalText("×"))),
                 intoTexturePosY(y1 - 4 + 1)
         );
-        this.itemRenderer.renderAndDecorateFakeItem(
+        guiGraphics.renderFakeItem(
                 new ItemStack(MetroClientNetwork.currencyItem),
                 intoTexturePosX(x0 + Math.max(font.width(balanceText), font.width(priceText)) + 4 + font.width(MALocalizationUtil.literalText("×"))),
                 intoTexturePosY(y1 - 4 + 16 + 1)
@@ -189,33 +196,41 @@ public class TicketVendorPaymentScreen extends Screen {
         // Continue button
         boolean thisTabHovering = this.mouseX >= intoTexturePosX(x2) && this.mouseY >= intoTexturePosY(y2 + CONTINUE_BUTTON_BASE_HEIGHT * 7) && this.mouseX <= intoTexturePosX(x2 + CONTINUE_BUTTON_BASE_WIDTH) && this.mouseY <= intoTexturePosY(y2 + CONTINUE_BUTTON_BASE_HEIGHT * 7 + CONTINUE_BUTTON_BASE_HEIGHT);
         if (thisTabHovering) {
-            RenderSystem.setShaderTexture(0, CONTINUE_BUTTON_BASE_HOVER_ID);
+            guiGraphics.blit(
+                    CONTINUE_BUTTON_BASE_HOVER_ID,
+                    intoTexturePosX(x2),
+                    intoTexturePosY(y2 + CONTINUE_BUTTON_BASE_HEIGHT * 7),
+                    0,
+                    0,
+                    CONTINUE_BUTTON_BASE_WIDTH, CONTINUE_BUTTON_BASE_HEIGHT,
+                    CONTINUE_BUTTON_BASE_WIDTH, CONTINUE_BUTTON_BASE_HEIGHT
+            );
         } else {
             RenderSystem.setShaderColor(241f / 256f, 175f / 256f, 21f / 256f, 1f);
-            RenderSystem.setShaderTexture(0, CONTINUE_BUTTON_BASE_ID);
+            guiGraphics.blit(
+                    CONTINUE_BUTTON_BASE_ID,
+                    intoTexturePosX(x2),
+                    intoTexturePosY(y2 + CONTINUE_BUTTON_BASE_HEIGHT * 7),
+                    0,
+                    0,
+                    CONTINUE_BUTTON_BASE_WIDTH, CONTINUE_BUTTON_BASE_HEIGHT,
+                    CONTINUE_BUTTON_BASE_WIDTH, CONTINUE_BUTTON_BASE_HEIGHT
+            );
         }
-        blit(
-                matrices,
-                intoTexturePosX(x2),
-                intoTexturePosY(y2 + CONTINUE_BUTTON_BASE_HEIGHT * 7),
-                0,
-                0,
-                CONTINUE_BUTTON_BASE_WIDTH, CONTINUE_BUTTON_BASE_HEIGHT,
-                CONTINUE_BUTTON_BASE_WIDTH, CONTINUE_BUTTON_BASE_HEIGHT
-        );
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-        matrices.pushPose();
-        matrices.scale(scaleFactor, scaleFactor, scaleFactor);
+        poseStack.pushPose();
+        poseStack.scale(scaleFactor, scaleFactor, scaleFactor);
         Component continueText = MALocalizationUtil.translatableText("gui.metropolis.ticket_vendor_payment.continue_button");
-        font.draw(
-                matrices,
+        guiGraphics.drawString(
+                this.font,
                 continueText,
-                intoTexturePosX(x2 + CONTINUE_BUTTON_BASE_WIDTH / 2f - font.width(continueText) / 2f) / scaleFactor,
-                intoTexturePosY(y2 + CONTINUE_BUTTON_BASE_HEIGHT * 7 + 5) / scaleFactor,
-                0xFFFFFF
+                (int) (intoTexturePosX(x2 + CONTINUE_BUTTON_BASE_WIDTH / 2f - font.width(continueText) / 2f) / scaleFactor),
+                (int) (intoTexturePosY(y2 + CONTINUE_BUTTON_BASE_HEIGHT * 7 + 5) / scaleFactor),
+                0xFFFFFF,
+                false
         );
-        matrices.popPose();
+        poseStack.popPose();
 
         if (thisTabHovering && pressed && ableToPay) {
             playDownSound(Minecraft.getInstance().getSoundManager());
@@ -229,7 +244,7 @@ public class TicketVendorPaymentScreen extends Screen {
 
         RenderSystem.disableBlend();
 
-        super.render(matrices, mouseX, mouseY, delta);
+        super.render(guiGraphics, mouseX, mouseY, delta);
 
         if (pressing) {
             pressed = !lastPressing;

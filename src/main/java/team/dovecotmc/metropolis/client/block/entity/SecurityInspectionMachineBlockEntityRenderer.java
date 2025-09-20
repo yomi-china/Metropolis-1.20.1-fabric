@@ -1,16 +1,15 @@
 package team.dovecotmc.metropolis.client.block.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.phys.Vec3;
 import team.dovecotmc.metropolis.block.BlockSecurityInspectionMachine;
 import team.dovecotmc.metropolis.block.entity.BlockEntitySecurityInspectionMachine;
 
@@ -26,7 +25,7 @@ public class SecurityInspectionMachineBlockEntityRenderer implements BlockEntity
 
         matrices.scale(1f / 16f, 1f / 16f, 1f / 16f);
         matrices.translate(8f, 8f, 8f);
-        matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, -entity.getBlockState().getValue(HorizontalDirectionalBlock.FACING).toYRot() - 180, 0)));
+        matrices.mulPose(Axis.YP.rotationDegrees(-entity.getBlockState().getValue(HorizontalDirectionalBlock.FACING).toYRot() - 180));
         matrices.translate(-8f, -8f, -8f);
         matrices.scale(16f, 16f, 16f);
 
@@ -47,12 +46,12 @@ public class SecurityInspectionMachineBlockEntityRenderer implements BlockEntity
                 );
 
                 matrices.translate(1, 1, 1);
-                matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, Minecraft.getInstance().level.getGameTime() * 3, 0)));
+                matrices.mulPose(Axis.YP.rotationDegrees(Minecraft.getInstance().level.getGameTime() * 3));
                 matrices.translate(-1, -1, -1);
             }
 
             matrices.scale(16f, 16f, 16f);
-            itemRenderer.renderStatic(entity.getItem(0), ItemTransforms.TransformType.GROUND, light, overlay, matrices, vertexConsumers, 0);
+            itemRenderer.renderStatic(entity.getItem(0), ItemDisplayContext.GROUND, light, overlay, matrices, vertexConsumers, entity.getLevel(), 0);
         }
         matrices.popPose();
         matrices.popPose();

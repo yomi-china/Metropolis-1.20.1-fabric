@@ -1,14 +1,10 @@
 package team.dovecotmc.metropolis.client.block.entity;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,10 +15,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import team.dovecotmc.metropolis.Metropolis;
 import team.dovecotmc.metropolis.abstractinterface.util.MALocalizationUtil;
 import team.dovecotmc.metropolis.block.BlockTurnstile;
@@ -40,6 +36,7 @@ public class TurnstileBlockEntityRenderer implements BlockEntityRenderer<BlockEn
         Minecraft mc = Minecraft.getInstance();
         Level world = entity.getLevel();
         ItemRenderer itemRenderer = mc.getItemRenderer();
+        Font font = mc.font;
 
         matrices.pushPose();
         if (world != null) {
@@ -51,29 +48,35 @@ public class TurnstileBlockEntityRenderer implements BlockEntityRenderer<BlockEn
 
                 Component text = MALocalizationUtil.translatableText("misc.metropolis.turnstile_mode." + BlockEntityTurnstile.EnumTurnstileType.get(block.getValue(BlockTurnstile.TYPE)).name().toLowerCase());
 
-                float textScale = (float) (mc.font.lineHeight) / (float) mc.font.width(text);
+                float textScale = (float) (font.lineHeight) / (float) font.width(text);
                 matrices.translate(0, 1.25, 0);
                 matrices.scale(1f / 16f, 1f / 16f, 1f / 16f);
                 matrices.translate(8, 8, 8);
                 matrices.scale(textScale, textScale, textScale);
-                matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, -mc.player.getRotationVector().y, 0)));
-                matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(mc.player.getRotationVector().x, 0, 0)));
-                matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, 0, 180)));
-                matrices.translate(-mc.font.width(text) / 2f, 0, 0);
+                matrices.mulPose(Axis.YP.rotationDegrees(-mc.player.getRotationVector().y));
+                matrices.mulPose(Axis.XP.rotationDegrees(mc.player.getRotationVector().x));
+                matrices.mulPose(Axis.ZP.rotationDegrees(180));
+                matrices.translate(-font.width(text) / 2f, 0, 0);
 
-                mc.font.draw(
-                        matrices,
+                font.drawInBatch(
                         text,
                         0,
                         0,
-                        0xFFFFFF
+                        0xFFFFFF,
+                        false,
+                        matrices.last().pose(),
+                        vertexConsumers,
+                        Font.DisplayMode.NORMAL,
+                        0,
+                        light
                 );
                 matrices.popPose();
             }
 
+
             matrices.scale(1f / 16f, 1f / 16f, 1f / 16f);
             matrices.translate(8f, 8f, 8f);
-            matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, -facing.toYRot() - 180, 0)));
+            matrices.mulPose(Axis.YP.rotationDegrees(-facing.toYRot() - 180));
             matrices.translate(-8f, -8f, -8f);
             matrices.scale(16f, 16f, 16f);
 
@@ -107,7 +110,7 @@ public class TurnstileBlockEntityRenderer implements BlockEntityRenderer<BlockEn
                 // Backwards
                 matrices.pushPose();
                 matrices.translate(0.5f, 0.5f, 0.5f);
-                matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, 180, 0)));
+                matrices.mulPose(Axis.YP.rotationDegrees(180));
                 matrices.translate(-0.5f, -0.5f, -0.5f);
                 matrices.translate(0, 0, -d - 0.1f / 16f);
 
@@ -143,15 +146,17 @@ public class TurnstileBlockEntityRenderer implements BlockEntityRenderer<BlockEn
                         matrices.scale(0.33f, 0.33f, 0.33f);
                         double var0 = Math.sqrt((0.3 / 16 * (Math.min(animTime, 3) / 3f)) * 2);
                         matrices.translate(0, -var0, var0);
-                        matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(-45, 0, 90)));
+                        matrices.mulPose(Axis.XP.rotationDegrees(-45));
+                        matrices.mulPose(Axis.ZP.rotationDegrees(90));
 
                         itemRenderer.renderStatic(
                                 entity.getItem(0),
-                                ItemTransforms.TransformType.GROUND,
+                                ItemDisplayContext.GROUND,
                                 light,
                                 overlay,
                                 matrices,
                                 vertexConsumers,
+                                world,
                                 0
                         );
                         matrices.popPose();
@@ -165,15 +170,17 @@ public class TurnstileBlockEntityRenderer implements BlockEntityRenderer<BlockEn
                         matrices.scale(0.33f, 0.33f, 0.33f);
                         matrices.translate(0, -1d / 16d, 0);
                         matrices.translate(0, Math.sqrt((0.2 / 16) * Math.min(animTime, 5) / 5f), 0);
-                        matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(15, 0, 90)));
+                        matrices.mulPose(Axis.XP.rotationDegrees(15));
+                        matrices.mulPose(Axis.ZP.rotationDegrees(90));
 
                         itemRenderer.renderStatic(
                                 entity.getItem(0),
-                                ItemTransforms.TransformType.GROUND,
+                                ItemDisplayContext.GROUND,
                                 light,
                                 overlay,
                                 matrices,
                                 vertexConsumers,
+                                world,
                                 0
                         );
                         matrices.popPose();
@@ -204,15 +211,17 @@ public class TurnstileBlockEntityRenderer implements BlockEntityRenderer<BlockEn
                     matrices.scale(0.33f, 0.33f, 0.33f);
                     double var0 = Math.sqrt((0.3 / 16 * (Math.min(animTime, 3) / 3f)) * 2);
                     matrices.translate(0, -var0, var0);
-                    matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(-45, 0, 90)));
+                    matrices.mulPose(Axis.XP.rotationDegrees(-45));
+                    matrices.mulPose(Axis.ZP.rotationDegrees(90));
 
                     itemRenderer.renderStatic(
                             entity.getItem(0),
-                            ItemTransforms.TransformType.GROUND,
+                            ItemDisplayContext.GROUND,
                             light,
                             overlay,
                             matrices,
                             vertexConsumers,
+                            world,
                             0
                     );
                     matrices.popPose();

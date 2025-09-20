@@ -1,8 +1,6 @@
 package team.dovecotmc.metropolis.client.block.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.joml.Quaternionf;
 import team.dovecotmc.metropolis.block.BlockPSDSmallDoorSemiAuto;
 import team.dovecotmc.metropolis.block.entity.BlockEntityPSDSmallDoorSemiAuto;
 
@@ -35,7 +34,11 @@ public class BlockEntityRendererPSDSmallDoorSemiAuto implements BlockEntityRende
 
             matrices.scale(1f / 16f, 1f / 16f, 1f / 16f);
             matrices.translate(8f, 8f, 8f);
-            matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, -facing.toYRot() - 180, 0)));
+            matrices.mulPose(new Quaternionf().rotationYXZ(
+                    (float) Math.toRadians(-facing.toYRot() - 180),
+                    0,
+                    0
+            ));
             matrices.translate(-8f, -8f, -8f);
             matrices.scale(16f, 16f, 16f);
 

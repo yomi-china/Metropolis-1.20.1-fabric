@@ -1,13 +1,8 @@
 package team.dovecotmc.metropolis.client.block.entity;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
@@ -15,11 +10,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import team.dovecotmc.metropolis.Metropolis;
 import team.dovecotmc.metropolis.block.entity.BlockEntityFareAdj;
 import team.dovecotmc.metropolis.client.MetropolisClient;
@@ -45,11 +40,11 @@ public class FareAdjBlockEntityRenderer implements BlockEntityRenderer<BlockEnti
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableDepthTest();
-            RenderSystem.setShaderTexture(0, new ResourceLocation(Metropolis.MOD_ID, "textures/block/" + Registry.BLOCK.getKey(block.getBlock()).getPath() + "_monitor.png"));
+            RenderSystem.setShaderTexture(0, new ResourceLocation(Metropolis.MOD_ID, "textures/block/" + BuiltInRegistries.BLOCK.getKey(block.getBlock()).getPath() + "_monitor.png"));
 
             matrices.scale(1f / 16f, 1f / 16f, 1f / 16f);
             matrices.translate(8f, 8f, 8f);
-            matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, -facing.toYRot() - 180, 0)));
+            matrices.mulPose(Axis.YP.rotationDegrees(-facing.toYRot() - 180));
             matrices.translate(-8f, -8f, -8f);
 
             matrices.translate(0f, 0f, -0.1f);
@@ -77,7 +72,7 @@ public class FareAdjBlockEntityRenderer implements BlockEntityRenderer<BlockEnti
 
             matrices.pushPose();
             matrices.translate(0.5f, 0.5f, 0.5f);
-            matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, -facing.toYRot() - 180, 0)));
+            matrices.mulPose(Axis.YP.rotationDegrees(-facing.toYRot() - 180));
             matrices.translate(-0.5f, -0.5f, -0.5f);
             if (!entity.getItem(0).isEmpty()) {
                 matrices.pushPose();
@@ -92,8 +87,9 @@ public class FareAdjBlockEntityRenderer implements BlockEntityRenderer<BlockEnti
                     matrices.translate(-0.5 / 16f, 0, 0);
                     matrices.scale(0.33f, 0.33f, 0.33f);
                     matrices.translate(0.5 / 16f, 0, 0);
-                    matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(-90, 0, 90)));
-                    mc.getItemRenderer().renderStatic(entity.getItem(0), ItemTransforms.TransformType.GROUND, light, overlay, matrices, vertexConsumers, 0);
+                    matrices.mulPose(Axis.XP.rotationDegrees(-90));
+                    matrices.mulPose(Axis.ZP.rotationDegrees(90));
+                    mc.getItemRenderer().renderStatic(entity.getItem(0), ItemDisplayContext.GROUND, light, overlay, matrices, vertexConsumers, mc.level, 0);
                     matrices.popPose();
                 }
             }

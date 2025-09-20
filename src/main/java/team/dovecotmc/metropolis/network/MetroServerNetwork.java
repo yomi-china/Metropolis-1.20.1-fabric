@@ -16,8 +16,6 @@ import net.minecraft.world.level.Level;
 import team.dovecotmc.metropolis.Metropolis;
 import team.dovecotmc.metropolis.block.entity.BlockEntityFareAdj;
 import team.dovecotmc.metropolis.block.entity.BlockEntityTicketVendor;
-import team.dovecotmc.metropolis.item.ItemCard;
-import team.dovecotmc.metropolis.item.ItemTicket;
 
 /**
  * @author Arrokoth
@@ -83,7 +81,7 @@ public class MetroServerNetwork {
                     }
                 }
 
-                Level world = player.getLevel();
+                Level world = player.serverLevel();
                 if (world != null) {
                     world.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.BLOCKS, 1f, 1f);
                     if (world.getBlockEntity(pos) instanceof BlockEntityTicketVendor blockEntity) {
@@ -115,7 +113,7 @@ public class MetroServerNetwork {
                     }
                 }
 
-                Level world = player.getLevel();
+                Level world = player.serverLevel();
                 if (world != null) {
                     world.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.BLOCKS, 1f, 1f);
                     if (world.getBlockEntity(pos) instanceof BlockEntityTicketVendor blockEntity) {
@@ -152,7 +150,7 @@ public class MetroServerNetwork {
                     }
                 }
                 
-                Level world = player.getLevel();
+                Level world = player.serverLevel();
                 if (world != null) {
                     world.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.BLOCKS, 1f, 1f);
                     if (world.getBlockEntity(pos) instanceof BlockEntityFareAdj blockEntity) {

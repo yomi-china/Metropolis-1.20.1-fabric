@@ -1,8 +1,7 @@
 package team.dovecotmc.metropolis.client.block.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
@@ -30,7 +29,7 @@ public class BumperBlockEntityRenderer implements BlockEntityRenderer<BlockEntit
 
         matrices.pushPose();
         matrices.translate(0.5f, 0.5f, 0.5f);
-        matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, (float) (state.getValue(BlockITVMonitor.ROTATION) * -22.5), 0)));
+        matrices.mulPose(Axis.YP.rotationDegrees((float) (state.getValue(BlockITVMonitor.ROTATION) * -22.5)));
         matrices.translate(-0.5f, -0.5f, -0.5f);
 
         boolean bl = Minecraft.useAmbientOcclusion() && state.getLightEmission() == 0 && model.useAmbientOcclusion();

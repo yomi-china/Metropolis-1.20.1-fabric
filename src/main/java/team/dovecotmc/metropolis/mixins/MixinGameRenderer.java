@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,13 +34,16 @@ public class MixinGameRenderer {
         }
         ModContainer mod = modContainer.get();
 
+        GuiGraphics guiGraphics = new GuiGraphics(mc, mc.renderBuffers().bufferSource());
+
         matrices.pushPose();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        mc.font.drawShadow(matrices, MALocalizationUtil.literalText(mod.getMetadata().getName() + " " + mod.getMetadata().getVersion().getFriendlyString()), 4, 4, 0xFFFFFF);
-        mc.font.drawShadow(matrices, MALocalizationUtil.literalText("This is an alpha version"), 4, 4 + (2 + mc.font.lineHeight), 0xFFFFFF);
-        mc.font.drawShadow(matrices, MALocalizationUtil.literalText("It might cause incompatible issues"), 4, 4 + (2 + mc.font.lineHeight) * 2, 0xFFFFFF);
-//        mc.textRenderer.drawWithShadow(matrices, MALocalizationUtil.literalText("Features in this version can be changed at any time"), 4, 4 + (2 + mc.textRenderer.fontHeight) * 3, 0xFFFFFF);
+
+        guiGraphics.drawString(mc.font, mod.getMetadata().getName() + " " + mod.getMetadata().getVersion().getFriendlyString(), 4, 4, 0xFFFFFF);
+        guiGraphics.drawString(mc.font, "This is an alpha version", 4, 4 + (2 + mc.font.lineHeight), 0xFFFFFF);
+        guiGraphics.drawString(mc.font, "It might cause incompatible issues", 4, 4 + (2 + mc.font.lineHeight) * 2, 0xFFFFFF);
+
         matrices.popPose();
     }
 }

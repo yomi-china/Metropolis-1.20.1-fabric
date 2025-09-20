@@ -1,9 +1,7 @@
 package team.dovecotmc.metropolis.client.block.entity;
 
-import team.dovecotmc.metropolis.block.entity.BlockEntityITVMonitor;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
@@ -15,6 +13,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import team.dovecotmc.metropolis.block.BlockITVMonitor;
+import team.dovecotmc.metropolis.block.entity.BlockEntityITVMonitor;
 
 /**
  * @author Arrokoth
@@ -30,7 +29,7 @@ public class ITVMonitorBlockEntityRenderer implements BlockEntityRenderer<BlockE
 
         matrices.pushPose();
         matrices.translate(0.5f, 0.5f, 0.5f);
-        matrices.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, (float) (state.getValue(BlockITVMonitor.ROTATION) * -22.5), 0)));
+        matrices.mulPose(Axis.YP.rotationDegrees((float) (state.getValue(BlockITVMonitor.ROTATION) * -22.5)));
         matrices.translate(-0.5f, -0.5f, -0.5f);
 
         boolean bl = Minecraft.useAmbientOcclusion() && state.getLightEmission() == 0 && model.useAmbientOcclusion();
