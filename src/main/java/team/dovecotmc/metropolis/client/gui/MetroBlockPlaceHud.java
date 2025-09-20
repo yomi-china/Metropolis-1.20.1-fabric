@@ -127,6 +127,7 @@ public class MetroBlockPlaceHud {
                             true
                     );
                 }
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             }
 
             matrices.popPose();
